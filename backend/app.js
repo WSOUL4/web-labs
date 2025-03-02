@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 
 import logger from 'morgan'
-
+import {conn} from './Database/db_start.js'
 function appServerLaunch(){
     const app = express();
     app.use(cors())//middleware
