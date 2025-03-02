@@ -4,10 +4,17 @@ import cors from 'cors'
 
 import logger from 'morgan'
 import {conn} from './Database/db_start.js'
+import {router} from './Routes/mainRoutes.js'
+import {usersRouter} from './Routes/usersRouter.js'
+import {eventsRouter} from './Routes/eventsRouter.js'
 function appServerLaunch(){
     const app = express();
     app.use(cors())//middleware
     app.use(express.json())//middleware
+    app.use(logger('dev'));
+    app.use(usersRouter);
+    app.use(eventsRouter);
+    app.use(router);
     dotenv.config()//Для чтения из .env
     const port = process.env.PORT;
     app.listen(port, (error) => {
@@ -18,4 +25,7 @@ function appServerLaunch(){
 }
 
 let app=appServerLaunch();
-app.use(logger('dev'));
+
+
+
+export {app}
