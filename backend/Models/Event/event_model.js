@@ -4,10 +4,16 @@ const Event = conn.define('Event', {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
     date: DataTypes.DATEONLY,
-    createdBy: {type: DataTypes.INTEGER, foreignKey: true},
-    id: {type: DataTypes.INTEGER, allowNull: false, unique: true, primaryKey: true},
+    createdBy: {type: DataTypes.INTEGER},//, foreignKey: true
+    id: {type: DataTypes.INTEGER, primaryKey: true},
+}, {
+    // don't add the timestamp attributes (updatedAt, createdAt)
+    timestamps: false,
+
 });
-await conn.sync();
+conn.sync()
+    .then()
+    .catch(err=>{console.log(err);})
 
 export {Event}
 

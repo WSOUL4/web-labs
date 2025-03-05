@@ -1,11 +1,14 @@
 import express from 'express'
 
-import {GetAllEvents} from '../Controllers/EventController.js'
-import {usersRouter} from "./usersRouter.js";
-//import {router} from "./mainRoutes.js";
+import {GetAll, GetById, Create, ChangeById,DeleteById} from '../Controllers/EventController.js'
+
+
 const eventsRouter = express.Router();
+eventsRouter.delete('/:id', DeleteById);
+eventsRouter.put('/:id', ChangeById);
+eventsRouter.post('', Create);
+eventsRouter.get('/:id', GetById);
+eventsRouter.get('', GetAll);
 
-
-eventsRouter.get('/events', GetAllEvents);
 
 export {eventsRouter}

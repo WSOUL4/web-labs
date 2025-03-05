@@ -12,9 +12,9 @@ function appServerLaunch(){
     app.use(cors())//middleware
     app.use(express.json())//middleware
     app.use(logger('dev'));
-    app.use(usersRouter);
-    app.use(eventsRouter);
-    app.use(router);
+    //app.use(bodyParser.json());
+
+
     dotenv.config()//Для чтения из .env
     const port = process.env.PORT;
     app.listen(port, (error) => {
@@ -26,6 +26,9 @@ function appServerLaunch(){
 
 let app=appServerLaunch();
 
+app.use('/events',eventsRouter);
+app.use('/users',usersRouter);
+app.use(router);
 
 
 export {app}

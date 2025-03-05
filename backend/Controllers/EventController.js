@@ -1,10 +1,105 @@
 import {conn} from '../Database/db_start.js'
 import {Event} from '../Models/Event/event_model.js'
-function GetAllEvents(req, res){
+import {getParameterByName} from "./SharedFuncs.js";
+
+//●	Получение списка всех мероприятий (GET /events)
+function GetAll(req, res){
     let q=Event.findAll()
-        .then(() => {res.send(q);})
-        .catch(err=> {console.log(err);})
+        .then(q => {res.send(q);})
+        .catch(err=> {res.send(err);})
+        .finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})
+}
+
+//●	Получение одного мероприятия по ID (GET /events/:id)
+function GetById(req, res){
+    //let id=getParameterByName('id',req.url);// А тут почему то работает req.params, не знаю почему на 1+ ломается
+    const eventId = req.params.id;
+    let q=Event.findByPk(eventId)
+        .then(q => {
+
+            //res.send(q);
+            if (q) {
+                res.json(q);
+            } else {
+                res.status(404).send('User not found');
+            }
+        })
+        .catch(err=> {res.send(err);})
+        .finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})
+}
+//●	Создание мероприятия (POST /events)
+function Create(req, res){
+    //title, description, date, createdBy, id
+    let title=getParameterByName('title',req.url);
+    let description=getParameterByName('description',req.url);
+    let date=getParameterByName('date',req.url);
+    let createdBy=getParameterByName('createdBy',req.url);
+
+    let id=getParameterByName('id',req.url);
+    let p = {"title":title,"description": description,"date":date, "createdBy":createdBy,"id":id};
+    let q= Event.create(p)
+        .then(q=>{
+            res.status(200).send("Created successfully");})
+        .catch(err=> {res.send(err);console.log(err);})
+        .finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})
+}
+//●	Обновление мероприятия (PUT /events/:id) НЕ ЗАКОНЧЕНО
+function ChangeById(req, res){
+    //title, description, date, createdBy, id
+    let title=getParameterByName('title',req.url);
+    let description=getParameterByName('description',req.url);
+    let date=getParameterByName('date',req.url);
+    let createdBy=getParameterByName('createdBy',req.url);
+
+    let id=getParameterByName('id',req.url);
+    let p = {"title":title,"description": description,"date":date, "createdBy":createdBy,"id":id};
+    let [rowsUpdated]=Event.update({
+        title: p.title,
+        description: p.description,
+        date: p.date,
+        createdBy:p.createdBy }, {
+        where: {
+            id: p.id,
+        }
+    })
+        .then(rowsUpdated => {
+            if (rowsUpdated > 0) {
+                res.status(200).send(`Event with ID ${p.id} updated successfully.`);
+            } else {
+                res.status(200).send(`No event found with ID ${p.id}.`);
+            }
+        })
+        .catch(err=> {res.send(err);})
+        .finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})
+}
+//●	Удаление мероприятия (DELETE /events/:id) НЕ ЗАКОНЧЕНО
+function DeleteById(req, res){
+    let p = req.params.id;
+    let [rowsUpdated]=Event.destroy( {
+        where: {
+            id: p.id,
+        }
+    })
+        .then(rowsUpdated => {
+            if (rowsUpdated > 0) {
+                res.status(200).send(`Event with ID ${p.id} deleted successfully.`);
+            } else {
+                res.status(404).send(`No event found with ID ${p.id}.`);
+            }
+        })
+        .catch(err=> {res.send(err);})
+        .finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})
 }
 
 
-export {GetAllEvents}
+export {GetAll,GetById,Create,ChangeById,DeleteById}

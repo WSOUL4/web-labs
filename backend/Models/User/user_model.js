@@ -4,8 +4,14 @@ const User = conn.define('User', {
     name: DataTypes.STRING,
     email: {type: DataTypes.STRING, unique: true},
     createdAt: DataTypes.DATEONLY,
-    id: {type: DataTypes.INTEGER, allowNull: false, unique: true, primaryKey: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true},
+}, {
+    // don't add the timestamp attributes (updatedAt, createdAt)
+    timestamps: false,
+
 });
-await conn.sync();
+conn.sync()
+    .then()
+    .catch(err=>{console.log(err);})
 export{User}
 
