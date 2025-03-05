@@ -45,7 +45,7 @@ function CheckRequiredField(req,res,next){
            // console.log('GOOD');
         }
         else{
-            res.status(400).send({message:'Not unique email  or id'})
+            res.status(400).send({message:'Not unique email  or id'});
         }
     });
     let e_u=isIdUniqueEmail(email)
