@@ -1,7 +1,9 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-
+import swaggerJsDoc from 'swagger-jsdoc'
+//import swaggerUi from 'swagger-ui-express'
+import {swaggerSpec,swaggerUi} from './Configs/Swagger.js'
 import logger from 'morgan'
 import {conn} from './Database/db_start.js'
 import {router} from './Routes/mainRoutes.js'
@@ -29,6 +31,7 @@ let app=appServerLaunch();
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
 app.use(router);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 export {app}
