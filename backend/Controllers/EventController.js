@@ -2,11 +2,21 @@ import {conn} from '../Database/db_start.js';
 import {Event} from '../Models/Event/event_model.js';
 import {getParameterByName} from "./SharedFuncs.js";
 import { Op } from 'sequelize';
+import {NotFoundError} from "../CustomErrors/errors.js";
 //●	Получение списка всех мероприятий (GET /events)
 function GetAll(req, res){
     let q=Event.findAll()
-        .then(q => {res.send(q);})
-        .catch(err=> {res.send(err);})
+        .then(q => {
+
+            if (q && q.length == 0) {
+                //throw NotFoundError;
+                res.status(404).send(`No events found`);
+
+            } else if (q) {
+                res.status(200).send(q);
+            }
+        })
+        .catch(err=> {res.status(500).send(`Database died `,err);})
         .finally(()=>{
             conn.close() // Always close the connection when done
                 .then()})
@@ -19,14 +29,14 @@ function GetById(req, res){
     let q=Event.findByPk(eventId)
         .then(q => {
 
-            //res.send(q);
-            if (q) {
-                res.json(q);
-            } else {
-                res.status(404).send('User not found');
-            }
+            if (q && q.length == 0) {
+                //throw NotFoundError;
+                res.status(404).send(`No events found`);
+
+            } else if (q) {
+                res.status(200).send(q);}
         })
-        .catch(err=> {res.send(err);})
+        .catch(err=> {res.status(500).send(`Database died `,err);})
         .finally(()=>{
             conn.close() // Always close the connection when done
                 .then()})
@@ -39,12 +49,12 @@ function Create(req, res){
     let date=getParameterByName('date',req.url);
     let createdBy=getParameterByName('createdBy',req.url);
 
-    let id=getParameterByName('id',req.url);
+    let id=Number(getParameterByName('id',req.url));
     let p = {"title":title,"description": description,"date":date, "createdBy":createdBy,"id":id};
     let q= Event.create(p)
         .then(q=>{
             res.status(200).send("Created successfully");})
-        .catch(err=> {res.send(err);console.log(err);})
+        .catch(err=> {res.status(500).send(`Database died `,err);console.log(err);})
         .finally(()=>{
             conn.close() // Always close the connection when done
                 .then()})
@@ -57,7 +67,7 @@ function ChangeById(req, res){
     let date=getParameterByName('date',req.url);
     let createdBy=getParameterByName('createdBy',req.url);
 
-    let id=getParameterByName('id',req.url);
+    let id=Number(getParameterByName('id',req.url));
     let p = {"title":title,"description": description,"date":date, "createdBy":createdBy,"id":id};
     let [rowsUpdated]=Event.update({
         title: p.title,
@@ -75,7 +85,7 @@ function ChangeById(req, res){
                 res.status(200).send(`No event found with ID ${p.id}.`);
             }
         })
-        .catch(err=> {res.send(err);})
+        .catch(err=> {res.status(500).send(`Database died `,err);})
         .finally(()=>{
             conn.close() // Always close the connection when done
                 .then()})
@@ -95,7 +105,7 @@ function DeleteById(req, res){
                 res.status(404).send(`No event found with ID ${p.id}.`);
             }
         })
-        .catch(err=> {res.send(err);})
+        .catch(err=> {res.status(500).send(`Database died `,err);})
         .finally(()=>{
             conn.close() // Always close the connection when done
                 .then()})
@@ -120,13 +130,16 @@ function GetBetween(req, res){
         }
     })
         .then(q => {
-            if (q) {
-                res.status(200).send(q);
-            } else {
+            console.log(q.length);
+            if (q && q.length == 0) {
+                //throw NotFoundError;
                 res.status(404).send(`No event found between`);
+
+            } else if (q) {
+                res.status(200).send(q);
             }
         })
-        .catch(err=> {res.send(err);})
+        .catch(err=> {res.status(500).send(`Database died `,err);})
         .finally(()=>{
             conn.close() // Always close the connection when done
                 .then()})
