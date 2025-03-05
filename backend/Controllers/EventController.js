@@ -1,7 +1,7 @@
-import {conn} from '../Database/db_start.js'
-import {Event} from '../Models/Event/event_model.js'
+import {conn} from '../Database/db_start.js';
+import {Event} from '../Models/Event/event_model.js';
 import {getParameterByName} from "./SharedFuncs.js";
-
+import { Op } from 'sequelize';
 //●	Получение списка всех мероприятий (GET /events)
 function GetAll(req, res){
     let q=Event.findAll()
@@ -49,7 +49,7 @@ function Create(req, res){
             conn.close() // Always close the connection when done
                 .then()})
 }
-//●	Обновление мероприятия (PUT /events/:id) НЕ ЗАКОНЧЕНО
+//●	Обновление мероприятия (PUT /events/:id)
 function ChangeById(req, res){
     //title, description, date, createdBy, id
     let title=getParameterByName('title',req.url);
@@ -80,7 +80,7 @@ function ChangeById(req, res){
             conn.close() // Always close the connection when done
                 .then()})
 }
-//●	Удаление мероприятия (DELETE /events/:id) НЕ ЗАКОНЧЕНО
+//●	Удаление мероприятия (DELETE /events/:id)
 function DeleteById(req, res){
     let p = req.params.id;
     let [rowsUpdated]=Event.destroy( {
@@ -100,6 +100,36 @@ function DeleteById(req, res){
             conn.close() // Always close the connection when done
                 .then()})
 }
+//●	Получение мероприятий между date (GET /events/:startDate:endDate)
+function GetBetween(req, res){
 
+    let startDate=getParameterByName('startDate',req.url);
+    let endDate=getParameterByName('endDate',req.url);
 
-export {GetAll,GetById,Create,ChangeById,DeleteById}
+    //let p = {"startDate":startDate,"endDate":endDate};
+    /*const where = {
+        from: {
+            $between: [startDate, endDate]
+        }
+    };*/
+    let q=Event.findAll( {
+        where: {
+            date: {
+        [Op.between]: [startDate, endDate]
+    }
+        }
+    })
+        .then(q => {
+            if (q) {
+                res.status(200).send(q);
+            } else {
+                res.status(404).send(`No event found between`);
+            }
+        })
+        .catch(err=> {res.send(err);})
+        .finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})
+}
+
+export {GetAll,GetById,Create,ChangeById,DeleteById,GetBetween}
