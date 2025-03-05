@@ -6,7 +6,7 @@ import {GetAll, GetById, Create, ChangeById,DeleteById,GetBetween} from '../Cont
 const eventsRouter = express.Router();
 eventsRouter.delete('/:id', DeleteById);
 eventsRouter.put('/:id', ChangeById);
-eventsRouter.post('', Create);
+eventsRouter.post('',CheckRequiredField, Create);
 eventsRouter.get('/:id', GetById);
 eventsRouter.get('/:startDate?/:endDate?', GetBetween);
 eventsRouter.get('', GetAll);

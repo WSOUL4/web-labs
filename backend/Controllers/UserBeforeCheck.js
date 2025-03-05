@@ -20,6 +20,22 @@ function isIdUniqueId (val) {
                 .then()})
 
 }
+
+function isIdUniqueEmail (val) {
+    return User.count({
+        where:
+            { email: val }
+    })
+        .then(count => {
+            //console.log(count);
+            return count === 0;
+
+        })
+        .finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})
+
+}
 function CheckRequiredField(req,res,next){
     let email=getParameterByName('email',req.url);
     let id=getParameterByName('id',req.url);
@@ -32,6 +48,17 @@ function CheckRequiredField(req,res,next){
             res.status(400).send({message:'Not unique email  or id'})
         }
     });
+    let e_u=isIdUniqueEmail(email)
+        .then(e_u => {
+            if (e_u) {
+                // console.log('GOOD');
+            }
+            else{
+                res.status(400).send({message:'Not unique email  or id'})
+            }
+        });
+
+
 try {
     if (email && email!=='' && id){
          next();
