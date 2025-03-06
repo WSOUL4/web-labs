@@ -30,7 +30,7 @@ let app=appServerLaunch();
 
 app.use('/events',eventsRouter);
 app.use('/users',usersRouter);
-app.use(router);
+//app.use(router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 

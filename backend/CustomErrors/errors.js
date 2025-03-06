@@ -1,9 +1,11 @@
-const ValidationError = new TypeError("Ошибка в параметрах запроса(атрибутах)!");
-
-const NotFoundError = new TypeError("Результата с такими параметрами не найдено :(");
-//const BackendError= new InternalError("Ошибка на стороне сервера :(");
-
-
+class CustomError extends Error {
+    constructor(status, message) {
+        super(message);
+        this.status = status;
+    }
+}
+const ValidationError =  new CustomError(400, 'Это ошибка в атрибутах!');
+const NotFoundError = new CustomError(400,"Результата с такими параметрами не найдено :(");
 
 
 

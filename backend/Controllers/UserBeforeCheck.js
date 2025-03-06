@@ -15,9 +15,9 @@ function isIdUniqueId (val) {
             return count === 0;
 
         })
-        .finally(()=>{
+        /*.finally(()=>{
             conn.close() // Always close the connection when done
-                .then()})
+               .then()})*/
 
 }
 
@@ -31,9 +31,10 @@ function isIdUniqueEmail (val) {
             return count === 0;
 
         })
+        /*
         .finally(()=>{
             conn.close() // Always close the connection when done
-                .then()})
+                .then()})*/
 
 }
 function CheckRequiredField(req,res,next){
@@ -46,31 +47,27 @@ function CheckRequiredField(req,res,next){
         }
         else{
             res.status(400).send({message:'Not unique email  or id'});
+            //next();
+            //return;
         }
     });
     let e_u=isIdUniqueEmail(email)
         .then(e_u => {
             if (e_u) {
                 // console.log('GOOD');
+                if (email && email!==''){
+                    next();
+                }
             }
             else{
-                res.status(400).send({message:'Not unique email  or id'})
+                res.status(400).send({message:'Not unique email  or id'});
+                //next();
+                //return;
             }
-        });
+        })
+        .catch(err=>{console.log(err);})
 
 
-try {
-    if (email && email!=='' && id){
-         next();
-    }else{
-        //throw ValidationError;
-        res.status(400).send({message:'No email or id, they are required'})
-    }
-}catch (e) {
-    if (e instanceof ValidationError){
-        res.status(400).send({message: 'No email or id, they are required'});
-    }
-}
 
 
 }
