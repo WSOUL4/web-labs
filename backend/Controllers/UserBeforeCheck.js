@@ -1,71 +1,41 @@
 import express from 'express'
-import {getParameterByName} from './SharedFuncs.js'
-import {ValidationError} from "../CustomErrors/errors.js";
+//import {getParameterByName} from './SharedFuncs.js'
+import {ValErr} from "../CustomErrors/errors.js";
 import {User} from '../Models/User/user_model.js'
 import {conn} from "../Database/db_start.js";
+import {isUniqueEmail, isUniqueId} from "../Utilities/Users/utilsU.js";
 
 
-function isIdUniqueId (val) {
-    return User.count({
-        where:
-            { id: val }
-    })
-        .then(count => {
-            //console.log(count);
-            return count === 0;
-
-        })
-        /*.finally(()=>{
-            conn.close() // Always close the connection when done
-               .then()})*/
-
-}
-
-function isIdUniqueEmail (val) {
-    return User.count({
-        where:
-            { email: val }
-    })
-        .then(count => {
-            //console.log(count);
-            return count === 0;
-
-        })
-        /*
-        .finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
-
-}
 function CheckRequiredField(req,res,next){
-    let email=getParameterByName('email',req.url);
-    let id=getParameterByName('id',req.url);
-    let id_u=isIdUniqueId(id)
+    //console.log(req.body);
+    let email=req.body.email;
+
+    let id=req.body.id;
+    //console.log(id);
+    let id_u=isUniqueId(id)
         .then(id_u => {
-        if (id_u) {
-           // console.log('GOOD');
-        }
-        else{
-            res.status(400).send({message:'Not unique email  or id'});
-            //next();
-            //return;
-        }
-    });
-    let e_u=isIdUniqueEmail(email)
-        .then(e_u => {
-            if (e_u) {
-                // console.log('GOOD');
-                if (email && email!==''){
-                    next();
-                }
-            }
-            else{
-                res.status(400).send({message:'Not unique email  or id'});
-                //next();
-                //return;
-            }
+            let e_u=isUniqueEmail(email)
+                .then(e_u => {
+                    if (e_u && id_u) {
+                        // console.log('GOOD');
+
+                        next();
+
+                    }
+                    else{
+                        ValErr(res);
+                        //res.status(400).send({message:'Not unique email  or id'});
+                        //next();
+                        //return;
+                    }
+                })
+
+    })
+        .catch(err=>{
+            console.log(err);
+
+            next(err);
         })
-        .catch(err=>{console.log(err);})
 
 
 

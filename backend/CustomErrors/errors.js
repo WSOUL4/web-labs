@@ -7,11 +7,15 @@ class CustomError extends Error {
 const ValidationError =  new CustomError(400, 'Это ошибка в атрибутах!');
 const NotFoundError = new CustomError(400,"Результата с такими параметрами не найдено :(");
 
-
+function ValErr(res) {
+    res.status(400).send({message:'Not unique email  or id'});
+}
 
 
 
 export {ValidationError,
-    NotFoundError
+    NotFoundError,
+    CustomError,
+    ValErr,
     /*BackendError */
 }

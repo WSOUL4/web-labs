@@ -7,14 +7,17 @@ import {swaggerSpec,swaggerUi} from './Configs/Swagger.js'
 import logger from 'morgan'
 import {conn} from './Database/db_start.js'
 import {router} from './Routes/mainRoutes.js'
-import {usersRouter} from './Routes/usersRouter.js'
-import {eventsRouter} from './Routes/eventsRouter.js'
+import {eventsRouter} from "./Routes/eventsRouter.js";
+import {usersRouter} from "./Routes/usersRouter.js";
+import {CustomError} from './CustomErrors/errors.js'
+import bodyParser from "body-parser"
+
 function appServerLaunch(){
     const app = express();
     app.use(cors())//middleware
     app.use(express.json())//middleware
     app.use(logger('dev'));
-    //app.use(bodyParser.json());
+    app.use(bodyParser.json());
 
 
     dotenv.config()//Для чтения из .env
@@ -28,10 +31,17 @@ function appServerLaunch(){
 
 let app=appServerLaunch();
 
-app.use('/events',eventsRouter);
-app.use('/users',usersRouter);
-//app.use(router);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use(router);
+//app.use('/users', usersRouter);
+//app.use('/events', eventsRouter);
+
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use((err, req, res, next) => {
+    if ( err instanceof CustomError){
+        res.status(400).send('Custom err');
+    }
+});
 
 export {app}
