@@ -3,6 +3,7 @@ import {conn} from '../../Database/db_start.js'
 const User = conn.define('User', {
     name: DataTypes.STRING,
     email: {type: DataTypes.STRING, unique: true},
+    password: DataTypes.STRING,
     createdAt: DataTypes.DATEONLY,
     id: {type: DataTypes.INTEGER, primaryKey: true},
 }, {
