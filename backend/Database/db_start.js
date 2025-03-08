@@ -12,6 +12,7 @@ const conn = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env
 conn.authenticate()
     .then(() => {
         console.log('Соединение успешно установлено.');
+
     })
     .catch(err => {
         console.error('Не удалось установить соединение:', err);
