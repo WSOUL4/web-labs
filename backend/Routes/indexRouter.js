@@ -1,5 +1,5 @@
 import express from 'express';
-import {authRouter} from "./auth.js";
+import {authRouter} from "./authRouter.js";
 import {passport,strategy} from '../Configs/passport.js';
 import {GetAll, GetById, Create, ChangeById,DeleteById,GetBetween} from '../Controllers/EventController.js';
 const indexRouter = express.Router();

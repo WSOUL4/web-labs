@@ -3,7 +3,7 @@ import express from 'express';
 import {eventsRouter} from "./eventsRouter.js";
 import {usersRouter} from "./usersRouter.js";
 
-import {authRouter} from "./auth.js";
+import {authRouter} from "./authRouter.js";
 import {publicRouter} from "./publicRouter.js";
 import {indexRouter} from "./indexRouter.js";
 

@@ -7,8 +7,6 @@ import {swaggerSpec,swaggerUi} from './Configs/Swagger.js';
 import logger from 'morgan';
 import {conn} from './Database/db_start.js';
 import {router} from './Routes/mainRoutes.js';
-import {eventsRouter} from "./Routes/eventsRouter.js";
-import {usersRouter} from "./Routes/usersRouter.js";
 import {CustomError} from './CustomErrors/errors.js';
 import bodyParser from "body-parser";
 import {passport} from './Configs/passport.js';
