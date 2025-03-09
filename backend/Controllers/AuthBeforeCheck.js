@@ -1,7 +1,7 @@
 import {isUniqueEmail} from "../Utilities/Users/utilsU.js";
 
 
-function CheckAuthField(req,res,next) {
+function CheckRegField(req,res,next) {
     //console.log(req.body);
     let email = req.body.email;
 
@@ -25,4 +25,4 @@ function CheckAuthField(req,res,next) {
             console.log(err);
         })
 }
-export {CheckAuthField}
+export {CheckRegField}

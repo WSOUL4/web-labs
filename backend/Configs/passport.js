@@ -4,6 +4,7 @@ import {User} from '../Models/User/user_model.js';
 import dotenv from 'dotenv';
 import express from 'express';
 dotenv.config()//Для чтения из .env
+/*
 const options={
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_SECRET
@@ -23,5 +24,34 @@ passport.use(
         }
     })
 );
+*/
 
-export {passport}
+
+const options = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET, // используйте ваш секретный ключ
+};
+
+const strategy = new JwtStrategy(options, async (payload, done) => {
+    try {
+        const user = User.findOne( {
+            where: {id: payload.id}
+        })
+            .then(user=>{
+                if (user) {
+                    return done(null, user);
+                }
+                return done(null, false);
+            })
+
+    } catch (error) {
+        done(error, false);
+    }
+});
+
+
+
+export {passport,strategy}
+
+
+

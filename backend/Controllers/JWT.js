@@ -7,8 +7,8 @@ dotenv.config()//Для чтения из .env
 function generateToken(id,l) {
     // Данные, которые вы хотите зашифровать в JWT
     const payload = {
-        userId: id,
-        username: l
+        id: id,
+        login: l
     };
 
 // Секретный ключ для подписи токена
@@ -33,6 +33,7 @@ function decodeToken(token) {
 }
 function getTokenFromHeaders(req){
     let token= req.headers.authorization;
+    token = token.replace(/^Bearer\s+/, "");
     return token;
 }
 

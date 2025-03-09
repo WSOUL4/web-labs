@@ -1,16 +1,17 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import cors from 'cors'
-import swaggerJsDoc from 'swagger-jsdoc'
-//import swaggerUi from 'swagger-ui-express'
-import {swaggerSpec,swaggerUi} from './Configs/Swagger.js'
-import logger from 'morgan'
-import {conn} from './Database/db_start.js'
-import {router} from './Routes/mainRoutes.js'
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import swaggerJsDoc from 'swagger-jsdoc';
+//import swaggerUi from 'swagger-ui-express';
+import {swaggerSpec,swaggerUi} from './Configs/Swagger.js';
+import logger from 'morgan';
+import {conn} from './Database/db_start.js';
+import {router} from './Routes/mainRoutes.js';
 import {eventsRouter} from "./Routes/eventsRouter.js";
 import {usersRouter} from "./Routes/usersRouter.js";
-import {CustomError} from './CustomErrors/errors.js'
-import bodyParser from "body-parser"
+import {CustomError} from './CustomErrors/errors.js';
+import bodyParser from "body-parser";
+import {passport} from './Configs/passport.js';
 
 function appServerLaunch(){
     const app = express();
@@ -18,7 +19,7 @@ function appServerLaunch(){
     app.use(express.json())//middleware
     app.use(logger('dev'));
     app.use(bodyParser.json());
-
+    app.use(passport.initialize());
 
     dotenv.config()//Для чтения из .env
     const port = process.env.PORT;
