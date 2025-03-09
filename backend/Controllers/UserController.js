@@ -6,7 +6,7 @@ import {User} from '../Models/User/user_model.js'
 function GetAll(req, res){
 
      let q=User.findAll({
-         attributes: {exclude: ['password']}})//We cant show password
+         attributes: {exclude: ['password','createdAt','updatedAt']}})//We cant show password
          .then(q => {
              if (q && q.length == 0) {
                  //throw NotFoundError;

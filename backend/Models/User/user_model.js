@@ -5,11 +5,11 @@ const User = conn.define('User', {
     name: DataTypes.STRING,
     email: {type: DataTypes.STRING, unique: true},
     password: DataTypes.STRING,
-    createdAt: DataTypes.DATEONLY,
-    id: {type: DataTypes.INTEGER, primaryKey: true},
+    //createdAt: DataTypes.DATEONLY,///now()::date
+    //id: {type: DataTypes.INTEGER, primaryKey: true},//nextval('"Users_id_seq"'::regclass)
 }, {
     // don't add the timestamp attributes (updatedAt, createdAt)
-    timestamps: false,
+    timestamps: true,
 
 
 });
@@ -19,7 +19,7 @@ User.beforeCreate(async (user)=>{
     console.log('Password hashed');
 });
 async function syncModels() {
-    await User.sync({ alter: true }); // Обратите внимание: force: true удалит таблицы перед созданием
+    await User.sync({ alter: true }); // Обратите внимание:alter, force: true удалит таблицы перед созданием
     console.log("Tables synced!");
 }
 

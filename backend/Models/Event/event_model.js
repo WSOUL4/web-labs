@@ -6,7 +6,7 @@ const Event = conn.define('Event', {
     description: DataTypes.STRING,
     date: DataTypes.DATEONLY,
     createdBy: {type: DataTypes.INTEGER, foreignKey: true},//, foreignKey: true
-    id: {type: DataTypes.INTEGER, primaryKey: true},
+    //id: {type: DataTypes.INTEGER, primaryKey: true},
 }, {
     // don't add the timestamp attributes (updatedAt, createdAt)
     timestamps: false,
