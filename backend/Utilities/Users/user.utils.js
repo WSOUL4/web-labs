@@ -1,4 +1,4 @@
-import {User} from "../../Models/User/user_model.js";
+import {User} from "../../Models/User/user.model.js";
 
 function isUniqueId (val) {
     return User.count({

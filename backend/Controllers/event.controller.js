@@ -1,6 +1,6 @@
-import {Event} from '../Models/Event/event_model.js';
+import {Event} from '../Models/Event/event.model.js';
 import {Op} from 'sequelize';
-import {decodeToken, getTokenFromHeaders} from "./JWT.js";
+import {decodeToken, getTokenFromHeaders} from "./JWT.controller.js";
 
 //●	Получение списка всех мероприятий (GET /events)
 function getAll(req, res) {
@@ -12,7 +12,7 @@ function getAll(req, res) {
                 res.status(200).send(events);
             }
         })
-        .catch(err => {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err => {res.status(500).send(`Database error`);console.log(err);})
 
         /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -36,7 +36,7 @@ function getById(req, res){
             } else if (events) {
                 res.status(200).send(events);}
         })
-        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -46,9 +46,10 @@ function getByMy(req, res){
     //const eventId = req.body.id;
     let t=getTokenFromHeaders(req);
     let dt=decodeToken(t);
+    console.log(dt.id);
     Event.findAll({
         where:
-            { id: dt.id }
+            { createdBy: dt.id }
     })
         .then(events => {
 
@@ -59,7 +60,7 @@ function getByMy(req, res){
             } else if (events) {
                 res.status(200).send(events);}
         })
-        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -73,7 +74,7 @@ function create(req, res){
     Event.create(p)
         .then(()=>{
             res.status(200).send("Created successfully");})
-        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -99,7 +100,7 @@ function changeById(req, res){
                 res.status(200).send(`No event found with ID ${p.id}.`);
             }
         })
-        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -122,7 +123,7 @@ function deleteById(req, res){
                 res.status(404).send(`No event found with ID ${p}.`);
             }
         })
-        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -151,7 +152,7 @@ function getBetween(req, res){
                 res.status(200).send(events);
             }
         })
-        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done

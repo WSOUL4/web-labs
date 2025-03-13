@@ -1,19 +1,19 @@
 import express from 'express'
 //import {getParameterByName} from './SharedFuncs.js'
-import {Event} from '../Models/Event/event_model.js';
+import {Event} from '../Models/Event/event.model.js';
 
-import {conn} from "../Configs/db_start.js";
+import {conn} from "../Configs/start.database.js";
 import {ValidationError} from "../CustomErrors/errors.js";
-import {isUniqueId} from "../Utilities/Event/utilsE.js";
+import {isUniqueId} from "../Utilities/Event/event.utils.js";
 
 
 
-function CheckRequiredField(req,res,next){
+function checkRequiredField(req, res, next){
 
-    let id=req.params.id;
-    let id_u=isUniqueId(id)
-        .then(id_u => {
-            if (id_u) {
+    let id=req.body.id;
+    isUniqueId(id)
+        .then(isIdUni => {
+            if (isIdUni) {
                 // console.log('GOOD');
                 next();
             }
@@ -23,10 +23,10 @@ function CheckRequiredField(req,res,next){
             }
         })
         .catch(e=>{
-            if (e instanceof ValidationError){
+
                 res.status(400).send({message: 'Not unique id'});
-        }});
+        });
 
 
 }
-export {CheckRequiredField}
+export {checkRequiredField}

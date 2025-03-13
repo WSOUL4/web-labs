@@ -1,5 +1,5 @@
-import {Event} from "../../Models/Event/event_model.js";
-import {conn} from "../../Configs/db_start.js";
+import {Event} from "../../Models/Event/event.model.js";
+import {conn} from "../../Configs/start.database.js";
 
 function isUniqueId (val) { //utils
     return Event.count({
@@ -11,9 +11,7 @@ function isUniqueId (val) { //utils
             return count === 0;
 
         })
-        .finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})
+
 
 }
 

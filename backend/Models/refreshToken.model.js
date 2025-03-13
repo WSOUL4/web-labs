@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
-import {conn} from '../Configs/db_start.js';
-import {User} from "./User/user_model.js";
+import {conn} from '../Configs/start.database.js';
+import {User} from "./User/user.model.js";
 
 const RefreshToken = conn.define('RefreshToken', {
     user_id: DataTypes.INTEGER,

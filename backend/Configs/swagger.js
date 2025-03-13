@@ -10,7 +10,7 @@ const options = {
             description: 'Пример API с использованием swagger-jsdoc',
         },
     },
-    apis: ['./backend/Configs/SwaggerConfig.js'], // Путь к файлам с описанием API
+    apis: ['./backend/Configs/swagger.config.js'], // Путь к файлам с описанием API
     servers: [
         {
             url: 'http://localhost:8080',

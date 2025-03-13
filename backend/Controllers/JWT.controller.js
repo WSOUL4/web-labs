@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import {RefreshToken} from '../Models/refresh_token_model.js';
+import {RefreshToken} from '../Models/refreshToken.model.js';
 import dotenv from 'dotenv';
 import express from 'express';
-import {User} from "../Models/User/user_model.js";
+import {User} from "../Models/User/user.model.js";
 dotenv.config()//Для чтения из .env
 
 function generateToken(id,l) {

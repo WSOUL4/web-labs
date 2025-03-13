@@ -1,5 +1,5 @@
 import { Sequelize, DataTypes } from 'sequelize';
-import {conn} from '../../Configs/db_start.js';
+import {conn} from '../../Configs/start.database.js';
 import bcrypt from 'bcryptjs';
 const User = conn.define('User', {
     name: DataTypes.STRING,

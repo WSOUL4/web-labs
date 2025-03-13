@@ -1,5 +1,5 @@
-import {conn} from '../Configs/db_start.js'
-import {User} from '../Models/User/user_model.js'
+import {conn} from '../Configs/start.database.js'
+import {User} from '../Models/User/user.model.js'
 
 //import {getParameterByName} from './SharedFuncs.js'
 //●	Получение списка пользователей (GET /users)
@@ -18,7 +18,7 @@ function getAll(req, res){
 
 
          })
-         .catch(err=> {res.status(500).send(`Database died`);})
+         .catch(err=> {res.status(500).send(`Database error`);})
 
 
     /*.finally(()=>{
