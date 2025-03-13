@@ -11,6 +11,13 @@
  *   get:
  *     summary: Get all events
  *     tags: [Events]
+ *     parameters:
+ *       - name: API_KEY
+ *         in: header
+ *         required: true
+ *         description: The API key for authorization
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: A list of events
@@ -28,6 +35,12 @@ function getAll(req, res) { /* ... */ }
  *     summary: Get event by ID
  *     tags: [Events]
  *     parameters:
+ *       - name: API_KEY
+ *         in: header
+ *         required: true
+ *         description: The API key for authorization
+ *         schema:
+ *           type: string
  *       - in: path
  *         name: id
  *         required: true
@@ -50,6 +63,13 @@ function getById(req, res) { /* ... */ }
  *   post:
  *     summary: Create a new event
  *     tags: [Events]
+ *     parameters:
+ *       - name: API_KEY
+ *         in: header
+ *         required: true
+ *         description: The API key for authorization
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -83,6 +103,12 @@ function create(req, res) { /* ... */ }
  *     summary: Update an event by ID
  *     tags: [Events]
  *     parameters:
+ *       - name: API_KEY
+ *         in: header
+ *         required: true
+ *         description: The API key for authorization
+ *         schema:
+ *           type: string
  *       - in: path
  *         name: id
  *         required: true
@@ -122,6 +148,12 @@ function changeById(req, res) { /* ... */ }
  *     summary: Delete an event by ID
  *     tags: [Events]
  *     parameters:
+ *       - name: API_KEY
+ *         in: header
+ *         required: true
+ *         description: The API key for authorization
+ *         schema:
+ *           type: string
  *       - in: path
  *         name: id
  *         required: true
@@ -136,6 +168,13 @@ function changeById(req, res) { /* ... */ }
  *   get:
  *     summary: Retrieve all users
  *     tags: [Users]
+ *     parameters:
+ *       - name: API_KEY
+ *         in: header
+ *         required: true
+ *         description: The API key for authorization
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: A list of users
@@ -161,12 +200,20 @@ function changeById(req, res) { /* ... */ }
  *         description: Database error
  */
 
+
 /**
  * @swagger
  * /users:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
+ *     parameters:
+ *       - name: API_KEY
+ *         in: header
+ *         required: true
+ *         description: The API key for authorization
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
