@@ -1,19 +1,19 @@
-import {conn} from '../Database/db_start.js'
+import {conn} from '../Configs/db_start.js'
 import {User} from '../Models/User/user_model.js'
 
 //import {getParameterByName} from './SharedFuncs.js'
 //●	Получение списка пользователей (GET /users)
-function GetAll(req, res){
+function getAll(req, res){
 
-     let q=User.findAll({
+     User.findAll({
          attributes: {exclude: ['password','createdAt','updatedAt']}})//We cant show password
-         .then(q => {
-             if (q && q.length == 0) {
+         .then(users => {
+             if (users && users.length == 0) {
                  //throw NotFoundError;
                  res.status(404).send(`No users found`);
 
-             } else if (q) {
-                 res.status(200).send(q);
+             } else if (users) {
+                 res.status(200).send(users);
              }
 
 
@@ -27,7 +27,7 @@ function GetAll(req, res){
 
 }
 //●	Создание нового пользователя (POST /users)
-function Add(req, res){
+function add(req, res){
     console.log(req.body);
      try {
           //name, email, createdAt, id
@@ -36,8 +36,8 @@ function Add(req, res){
           let p = req.body;
 
 
-         let q= User.create(p)
-              .then(q=>{
+         User.create(p)
+              .then(()=>{
 
                       res.status(200).send(`Added new user`);
 
@@ -54,4 +54,4 @@ function Add(req, res){
 
 
 
-export {GetAll,Add}
+export {getAll,add}

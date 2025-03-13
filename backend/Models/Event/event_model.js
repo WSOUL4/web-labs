@@ -1,5 +1,5 @@
 import { Sequelize, DataTypes } from 'sequelize';
-import {conn} from '../../Database/db_start.js'
+import {conn} from '../../Configs/db_start.js'
 import {User} from "../User/user_model.js";
 const Event = conn.define('Event', {
     title: DataTypes.STRING,

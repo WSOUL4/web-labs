@@ -64,7 +64,7 @@ function refreshAccessToken(req,res,next){
 
     try{
         let dt=decodeToken(rt);//id, iat, exp
-        console.log(dt);
+        //console.log(dt);
         //user_id, token, expires_at
 
         let q=RefreshToken.findOne( {

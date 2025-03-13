@@ -1,18 +1,12 @@
-
 import express from 'express';
-import {eventsRouter} from "./eventsRouter.js";
-import {usersRouter} from "./usersRouter.js";
-
-import {authRouter} from "./authRouter.js";
-import {publicRouter} from "./publicRouter.js";
-import {indexRouter} from "./indexRouter.js";
+import eventRouter from "./event.router.js";
+import usersRouter from "./users.router.js";
+import authRouter from "./authRouter.js";
 
 
 const router = express.Router();
-router.use('/events', eventsRouter);
+router.use('/events', eventRouter);
 router.use('/users', usersRouter);
-router.use('/public',publicRouter);
-router.use('/index',indexRouter);
-router.use('', authRouter);
+router.use('/auth', authRouter);
 
-export {router};
+export default router;

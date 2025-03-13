@@ -1,5 +1,5 @@
 import {Event} from "../../Models/Event/event_model.js";
-import {conn} from "../../Database/db_start.js";
+import {conn} from "../../Configs/db_start.js";
 
 function isUniqueId (val) { //utils
     return Event.count({

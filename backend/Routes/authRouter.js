@@ -8,4 +8,4 @@ const authRouter = express.Router();
 authRouter.post('/register', CheckRegField, register);
 authRouter.get('/login', login);
 authRouter.post('/refresh', refreshAccessToken);
-export {authRouter}
+export default  authRouter;

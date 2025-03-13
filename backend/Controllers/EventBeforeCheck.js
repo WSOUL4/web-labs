@@ -2,7 +2,7 @@ import express from 'express'
 //import {getParameterByName} from './SharedFuncs.js'
 import {Event} from '../Models/Event/event_model.js';
 
-import {conn} from "../Database/db_start.js";
+import {conn} from "../Configs/db_start.js";
 import {ValidationError} from "../CustomErrors/errors.js";
 import {isUniqueId} from "../Utilities/Event/utilsE.js";
 

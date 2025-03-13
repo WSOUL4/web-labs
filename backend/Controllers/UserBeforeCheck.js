@@ -2,7 +2,7 @@ import express from 'express'
 //import {getParameterByName} from './SharedFuncs.js'
 import {ValErr} from "../CustomErrors/errors.js";
 import {User} from '../Models/User/user_model.js'
-import {conn} from "../Database/db_start.js";
+import {conn} from "../Configs/db_start.js";
 import {isUniqueEmail, isUniqueId} from "../Utilities/Users/utilsU.js";
 
 

@@ -1,24 +1,18 @@
-import {conn} from '../Database/db_start.js';
 import {Event} from '../Models/Event/event_model.js';
-//import {getParameterByName} from "./SharedFuncs.js";
-import { Op } from 'sequelize';
-import {NotFoundError} from "../CustomErrors/errors.js";
+import {Op} from 'sequelize';
+import {decodeToken, getTokenFromHeaders} from "./JWT.js";
 
 //●	Получение списка всех мероприятий (GET /events)
-function GetAll(req, res){
-
-    let q=Event.findAll()
-        .then(q => {
-
-            if (q && q.length == 0) {
-                //throw NotFoundError;
+function getAll(req, res) {
+    Event.findAll()
+        .then(events => {
+            if (events && events.length === 0) {
                 res.status(404).send(`No events found`);
-
-            } else if (q) {
-                res.status(200).send(q);
+            } else if (events) {
+                res.status(200).send(events);
             }
         })
-        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+        .catch(err => {res.status(500).send(`Database died `);console.log(err);})
 
         /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -26,21 +20,44 @@ function GetAll(req, res){
 }
 
 //●	Получение одного мероприятия по ID (GET /events/:id)
-function GetById(req, res){
+function getById(req, res){
     const eventId = req.body.id;
 
-    let q=Event.findAll({
+    Event.findAll({
         where:
             { id: eventId }
     })
-        .then(q => {
+        .then(events => {
 
-            if (q && q.length == 0) {
+            if (events && events.length == 0) {
                 //throw NotFoundError;
                 res.status(404).send(`No events found`);
 
-            } else if (q) {
-                res.status(200).send(q);}
+            } else if (events) {
+                res.status(200).send(events);}
+        })
+        .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
+
+    /*.finally(()=>{
+            conn.close() // Always close the connection when done
+                .then()})*/
+}
+function getByMy(req, res){
+    //const eventId = req.body.id;
+    let t=getTokenFromHeaders(req);
+    let dt=decodeToken(t);
+    Event.findAll({
+        where:
+            { id: dt.id }
+    })
+        .then(events => {
+
+            if (events && events.length == 0) {
+                //throw NotFoundError;
+                res.status(404).send(`No events found`);
+
+            } else if (events) {
+                res.status(200).send(events);}
         })
         .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
 
@@ -49,19 +66,12 @@ function GetById(req, res){
                 .then()})*/
 }
 //●	Создание мероприятия (POST /events)
-function Create(req, res){
-    //title, description, date, createdBy, id
-    /*
-    let title=req.body.title;
-    let description=req.body.description;
-    let date=req.body.date;
-    let createdBy=req.body.createdBy;
-    let id=req.params.id;*/
-    //let p = {"title":title,"description": description,"date":date, "createdBy":createdBy,"id":id};
+function create(req, res){
+
     let p= req.body;
     //console.log(p);
-    let q= Event.create(p)
-        .then(q=>{
+    Event.create(p)
+        .then(()=>{
             res.status(200).send("Created successfully");})
         .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
 
@@ -70,17 +80,10 @@ function Create(req, res){
                 .then()})*/
 }
 //●	Обновление мероприятия (PUT /events/:id)
-function ChangeById(req, res){
-    //title, description, date, createdBy, id
-    /*
-    let title=req.body.title;
-    let description=req.body.description;
-    let date=req.body.date;
-    let createdBy=req.body.createdBy;
-    let id=req.params.id;
-    let p = {"title":title,"description": description,"date":date, "createdBy":createdBy,"id":id};*/
+function changeById(req, res){
+
     let p= req.body;
-    let [rowsUpdated]=Event.update({
+    Event.update({
         title: p.title,
         description: p.description,
         date: p.date,
@@ -90,7 +93,7 @@ function ChangeById(req, res){
         }
     })
         .then(rowsUpdated => {
-            if (rowsUpdated > 0) {
+            if (rowsUpdated.length > 0) {
                 res.status(200).send(`Event with ID ${p.id} updated successfully.`);
             } else {
                 res.status(200).send(`No event found with ID ${p.id}.`);
@@ -103,17 +106,17 @@ function ChangeById(req, res){
                 .then()})*/
 }
 //●	Удаление мероприятия (DELETE /events/:id)
-function DeleteById(req, res){
+function deleteById(req, res){
     let p = req.body.id;
     //let p = req.params;
     //console.log(p);
-    let [rowsUpdated]=Event.destroy( {
+    Event.destroy( {
         where: {
             id: p,
         }
     })
-        .then(rowsUpdated => {
-            if (rowsUpdated > 0) {
+        .then(rowsDeleted => {
+            if (rowsDeleted > 0) {
                 res.status(200).send(`Event with ID ${p} deleted successfully.`);
             } else {
                 res.status(404).send(`No event found with ID ${p}.`);
@@ -126,32 +129,26 @@ function DeleteById(req, res){
                 .then()})*/
 }
 //●	Получение мероприятий между date (GET /events/:startDate:endDate)
-function GetBetween(req, res){
+function getBetween(req, res){
 
     let startDate=req.body.startDate;
     let endDate=req.body.endDate;
 
-    //let p = {"startDate":startDate,"endDate":endDate};
-    /*const where = {
-        from: {
-            $between: [startDate, endDate]
-        }
-    };*/
-    let q=Event.findAll( {
+   Event.findAll( {
         where: {
             date: {
         [Op.between]: [startDate, endDate]
     }
         }
     })
-        .then(q => {
-            console.log(q.length);
-            if (q && q.length == 0) {
+        .then(events => {
+            console.log(events.length);
+            if (events && events.length == 0) {
                 //throw NotFoundError;
                 res.status(404).send(`No event found between`);
 
-            } else if (q) {
-                res.status(200).send(q);
+            } else if (events) {
+                res.status(200).send(events);
             }
         })
         .catch(err=> {res.status(500).send(`Database died `);console.log(err);})
@@ -161,4 +158,4 @@ function GetBetween(req, res){
                 .then()})*/
 }
 
-export {GetAll,GetById,Create,ChangeById,DeleteById,GetBetween}
+export {getAll, getById, create, changeById, deleteById, getBetween,getByMy}

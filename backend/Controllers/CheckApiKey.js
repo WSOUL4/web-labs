@@ -1,7 +1,7 @@
 import express from 'express'
 import {ValidationError,NotFoundError} from '../CustomErrors/errors.js'
 import dotenv from 'dotenv'
-function api_key_vlidation(req,res,next){ // middleware
+function apiKeyValidation(req, res, next){ // middleware
     let headers = req.headers;
     const key = process.env.API_KEY;
     if (key===headers.api_key){
@@ -15,4 +15,4 @@ function api_key_vlidation(req,res,next){ // middleware
 
 
 }
-export {api_key_vlidation}
+export {apiKeyValidation}
