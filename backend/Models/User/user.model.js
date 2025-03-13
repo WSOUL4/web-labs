@@ -3,7 +3,7 @@ import {conn} from '../../Configs/start.database.js';
 import bcrypt from 'bcryptjs';
 const User = conn.define('User', {
     name: DataTypes.STRING,
-    email: {type: DataTypes.STRING, unique: true},
+    email: {type: DataTypes.STRING, unique: true, allowNull: false},
     password: DataTypes.STRING,
     //createdAt: DataTypes.DATEONLY,///now()::date
     //id: {type: DataTypes.INTEGER, primaryKey: true},//nextval('"Users_id_seq"'::regclass)

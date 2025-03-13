@@ -5,5 +5,5 @@ import {apiKeyValidation} from '../Controllers/apiKey.check.js';
 
 const usersRouter = express.Router();
 usersRouter.get('' ,apiKeyValidation, getAll);
-usersRouter.post('/',apiKeyValidation,checkRequiredField, add);//usersRouter.post('/users/:name/:email/:createdAt/:id', Add);
+usersRouter.post('/',apiKeyValidation, add);//usersRouter.post('/users/:name/:email/:createdAt/:id', Add);
 export default usersRouter;

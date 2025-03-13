@@ -1,231 +1,193 @@
 /**
- *
- *  @swagger
- * /users/?:
- *   get:
- *     summary: Получить пользователя с айди из параметра
- *
- *     parameters:
- *       - name: id
- *         in: query
- *         required: false
- *         description: Айди пользователя
- *         schema:
- *           type: string
- *     headers:
- *         API_KEY:
- *           type: "string"
- *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     404:
- *         description: Ответ с текстом о ненайденых строках
- *     500:
- *         description: Ошибка при выполнении запроса
- *   post:
- *     summary: Отправить данные для загрузки в БД
- *
- *     parameters:
- *       - name: name
- *         in: query
- *         required: false
- *         description: ФИО пользователя
- *         schema:
- *           type: string
- *       - name: email
- *         in: query
- *         required: false
- *         description: Почта пользователя
- *         schema:
- *           type: string
- *       - name: createdAt
- *         in: query
- *         required: false
- *         description: Дата создания пользователя
- *         schema:
- *           type: date
- *       - name: id
- *         in: query
- *         required: false
- *         description: Айди ивента
- *         schema:
- *           type: string
- *     headers:
- *         API_KEY:
- *           type: "string"
- *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     500:
- *         description: Ошибка при выполнении запроса
- * /events/?:
- *   put:
- *     summary: Отправить данные для обновления в БД
- *
- *     parameters:
- *       - name: title
- *         in: query
- *         required: false
- *         description: название ивента
- *         schema:
- *           type: string
- *       - name: description
- *         in: query
- *         required: false
- *         description: Описание ивента
- *         schema:
- *           type: string
- *       - name: date
- *         in: query
- *         required: false
- *         description: Дата проведения ивента
- *         schema:
- *           type: string
- *       - name: CreatedBy
- *         in: query
- *         required: false
- *         description: Айди пользователя, создавшего ивент
- *         schema:
- *           type: string
- *       - name: id
- *         in: query
- *         required: false
- *         description: Айди ивента
- *         schema:
- *           type: string
- *     headers:
- *         API_KEY:
- *           type: "string"
- *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     500:
- *         description: Ошибка при выполнении запроса
- *   delete:
- *     summary: Удалить ивент по айди
- *
- *     parameters:
- *       - name: id
- *         in: query
- *         required: false
- *         description: Айди ивента
- *         schema:
- *           type: string
- *     headers:
- *         API_KEY:
- *           type: "string"
- *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     404:
- *         description: Ответ с текстом о ненайденых строках
- *     500:
- *         description: Ошибка при выполнении запроса
- *   post:
- *     summary: Отправить данные для загрузки в БД
- *
- *     parameters:
- *       - name: title
- *         in: query
- *         required: false
- *         description: название ивента
- *         schema:
- *           type: string
- *       - name: description
- *         in: query
- *         required: false
- *         description: Описание ивента
- *         schema:
- *           type: string
- *       - name: date
- *         in: query
- *         required: false
- *         description: Дата проведения ивента
- *         schema:
- *           type: string
- *       - name: CreatedBy
- *         in: query
- *         required: false
- *         description: Айди пользователя, создавшего ивент
- *         schema:
- *           type: string
- *       - name: id
- *         in: query
- *         required: false
- *         description: Айди ивента
- *         schema:
- *           type: string
- *     headers:
- *         API_KEY:
- *           type: "string"
- *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     500:
- *         description: Ошибка при выполнении запроса
- *   get:
- *     summary: Получить ивент с айди из параметра
- *
- *     parameters:
- *       - name: id
- *         in: query
- *         required: false
- *         description: Айди пользователя
- *         schema:
- *           type: string
- *     headers:
- *         API_KEY:
- *           type: "string"
- *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     404:
- *         description: Ответ с текстом о ненайденых строках
- *     500:
- *         description: Ошибка при выполнении запроса
- *   
- * /users:
- *   get:
- *     summary: Получить пользователей всех
- *     headers:
- *         API_KEY:
- *           type: "string"
- *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     404:
- *         description: Ответ с текстом о ненайденых строках
- *     500:
- *         description: Ошибка при выполнении запроса
+ * @swagger
+ * tags:
+ *   name: Events
+ *   description: Event management
+ */
+
+/**
+ * @swagger
  * /events:
  *   get:
- *     summary: Получить ивенты все
- *     headers:
- *         API_KEY:
- *           type: "string"
+ *     summary: Get all events
+ *     tags: [Events]
  *     responses:
- *     200:
- *         description: Успешный ответ с json ответом
- *     400:
- *         description: Ответ с текстом о ошибке в атрибутах
- *     404:
- *         description: Ответ с текстом о ненайденых строках
- *     500:
- *         description: Ошибка при выполнении запроса
+ *       200:
+ *         description: A list of events
+ *       404:
+ *         description: No events found
+ *       500:
+ *         description: Database error
+ */
+function getAll(req, res) { /* ... */ }
 
+/**
+ * @swagger
+ * /events/{id}:
+ *   get:
+ *     summary: Get event by ID
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the event
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Event retrieved successfully
+ *       404:
+ *         description: No events found with the given ID
+ *       500:
+ *         description: Database error
+ */
+function getById(req, res) { /* ... */ }
 
+/**
+ * @swagger
+ * /events:
+ *   post:
+ *     summary: Create a new event
+ *     tags: [Events]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *               createdBy:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Created successfully
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Database error
+ */
+function create(req, res) { /* ... */ }
+
+/**
+ * @swagger
+ * /events/{id}:
+ *   put:
+ *     summary: Update an event by ID
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the event
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *               createdBy:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Event updated successfully
+ *       404:
+ *         description: No event found with ID
+ *       500:
+ *         description: Database error
+ */
+function changeById(req, res) { /* ... */ }
+
+/**
+ * @swagger
+ * /events/{id}:
+ *   delete:
+ *     summary: Delete an event by ID
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the event
+ *         schema:
+ *           type: integer
+*/
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Retrieve all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The user's ID
+ *                   name:
+ *                     type: string
+ *                     description: The user's name
+ *                   email:
+ *                     type: string
+ *                     description: The user's email
+ *       404:
+ *         description: No users found
+ *       500:
+ *         description: Database error
+ */
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The user's name
+ *               email:
+ *                 type: string
+ *                 description: The user's email
+ *     responses:
+ *       200:
+ *         description: User successfully added
+ *       400:
+ *         description: Validation error, check fields
+ *       500:
+ *         description: Database error
  */

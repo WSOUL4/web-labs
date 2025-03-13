@@ -1,5 +1,6 @@
 import {conn} from '../Configs/start.database.js'
 import {User} from '../Models/User/user.model.js'
+import {valErr,emptyErr} from "../CustomErrors/errors.js";
 
 //import {getParameterByName} from './SharedFuncs.js'
 //●	Получение списка пользователей (GET /users)
@@ -9,8 +10,8 @@ function getAll(req, res){
          attributes: {exclude: ['password','createdAt','updatedAt']}})//We cant show password
          .then(users => {
              if (users && users.length == 0) {
-                 //throw NotFoundError;
-                 res.status(404).send(`No users found`);
+                 emptyErr(res);
+                 //res.status(404).send(`No users found`);
 
              } else if (users) {
                  res.status(200).send(users);
@@ -42,7 +43,10 @@ function add(req, res){
                       res.status(200).send(`Added new user`);
 
               })
-              .catch(err=>{ res.status(500).send(`Not added`);})
+              .catch(err=>{
+                  //res.status(400).send({mess: `Not added, check fields`});
+                  valErr(res);
+              })
 
          /*.finally(()=>{
                   conn.close() // Always close the connection when done

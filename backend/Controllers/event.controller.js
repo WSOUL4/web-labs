@@ -1,18 +1,24 @@
 import {Event} from '../Models/Event/event.model.js';
 import {Op} from 'sequelize';
 import {decodeToken, getTokenFromHeaders} from "./JWT.controller.js";
+import {emptyErr, valErr} from "../CustomErrors/errors.js";
 
 //●	Получение списка всех мероприятий (GET /events)
 function getAll(req, res) {
     Event.findAll()
         .then(events => {
             if (events && events.length === 0) {
-                res.status(404).send(`No events found`);
+                emptyErr(res);
+                //res.status(404).send(`No events found`);
             } else if (events) {
                 res.status(200).send(events);
             }
         })
-        .catch(err => {res.status(500).send(`Database error`);console.log(err);})
+        .catch(err => {
+
+            //res.status(500).send(`Database error`);
+            valErr(res);
+            console.log(err);})
 
         /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -30,13 +36,16 @@ function getById(req, res){
         .then(events => {
 
             if (events && events.length == 0) {
-                //throw NotFoundError;
-                res.status(404).send(`No events found`);
+                emptyErr(res);
+                //res.status(404).send(`No events found`);
 
             } else if (events) {
                 res.status(200).send(events);}
         })
-        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
+        .catch(err=> {
+            //res.status(500).send(`Database error`);
+            valErr(res);
+            console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -54,13 +63,16 @@ function getByMy(req, res){
         .then(events => {
 
             if (events && events.length == 0) {
-                //throw NotFoundError;
-                res.status(404).send(`No events found`);
+                emptyErr(res);
+                //res.status(404).send(`No events found`);
 
             } else if (events) {
                 res.status(200).send(events);}
         })
-        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
+        .catch(err=> {
+            //res.status(500).send(`Database error`);
+            valErr(res);
+            console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -74,7 +86,10 @@ function create(req, res){
     Event.create(p)
         .then(()=>{
             res.status(200).send("Created successfully");})
-        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
+        .catch(err=> {
+            //res.status(400).send({mess: `Not added, check fields`});
+            valErr(res);
+            console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -97,10 +112,14 @@ function changeById(req, res){
             if (rowsUpdated.length > 0) {
                 res.status(200).send(`Event with ID ${p.id} updated successfully.`);
             } else {
-                res.status(200).send(`No event found with ID ${p.id}.`);
+                emptyErr(res);
+                //res.status(200).send(`No event found with ID ${p.id}.`);
             }
         })
-        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
+        .catch(err=> {
+            //res.status(400).send({mess: `Not changed, check fields`});
+            valErr(res);
+            console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
@@ -120,14 +139,17 @@ function deleteById(req, res){
             if (rowsDeleted > 0) {
                 res.status(200).send(`Event with ID ${p} deleted successfully.`);
             } else {
-                res.status(404).send(`No event found with ID ${p}.`);
+                emptyErr(res);
+                //res.status(404).send(`No event found with ID ${p}.`);
             }
         })
-        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
+        .catch(err=> {
 
-    /*.finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
+            //res.status(400).send(`Not deleted, check id`);
+            valErr(res);
+            console.log(err);})
+
+
 }
 //●	Получение мероприятий между date (GET /events/:startDate:endDate)
 function getBetween(req, res){
@@ -152,7 +174,10 @@ function getBetween(req, res){
                 res.status(200).send(events);
             }
         })
-        .catch(err=> {res.status(500).send(`Database error`);console.log(err);})
+        .catch(err=> {
+            //res.status(500).send(`Database error`);
+            valErr(res);
+            console.log(err);})
 
     /*.finally(()=>{
             conn.close() // Always close the connection when done
