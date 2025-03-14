@@ -9,7 +9,6 @@ import {
   getById,
   getByMy,
 } from "../Controllers/event.controller.js";
-import { checkRequiredField } from "../Controllers/event.prepare.js";
 import { passport, strategy } from "../Configs/passport.js";
 
 const router = express.Router();

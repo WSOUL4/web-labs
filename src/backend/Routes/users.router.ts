@@ -1,6 +1,5 @@
 import express from "express";
 import { getAll, add } from "../Controllers/user.controller.js";
-import { checkRequiredField } from "../Controllers/user.prepare.js";
 import { apiKeyValidation } from "../Controllers/apiKey.check.js";
 
 const usersRouter = express.Router();
