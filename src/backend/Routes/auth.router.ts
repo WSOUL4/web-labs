@@ -3,8 +3,8 @@ import {
   register,
   login,
   refreshAccessToken,
-} from '../Controllers/auth.controller';
-import { checkRegField } from '../Controllers/auth.prepare'; // Corrected the import name
+} from '@controllers/auth.controller';
+import { checkRegField } from '@controllers/auth.prepare'; // Corrected the import name
 
 const authRouter = express.Router();
 

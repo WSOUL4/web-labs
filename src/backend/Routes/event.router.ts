@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { apiKeyValidation } from '../Controllers/apiKey.check';
+import { apiKeyValidation } from '@controllers/apiKey.check';
 import {
   changeById,
   create,
@@ -8,8 +8,8 @@ import {
   getBetween,
   getById,
   getByMy,
-} from '../Controllers/event.controller';
-import { passport, strategy } from '../Configs/passport.js';
+} from '@controllers/event.controller';
+import passport, { strategy } from '@configs/passport';
 
 const router: Router = express.Router();
 

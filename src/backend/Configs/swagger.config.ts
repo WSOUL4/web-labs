@@ -27,7 +27,6 @@
  *         description: Database error
  */
 
-
 /**
  * @swagger
  * /events/{id}:
@@ -55,7 +54,6 @@
  *       500:
  *         description: Database error
  */
-
 
 /**
  * @swagger
@@ -94,7 +92,6 @@
  *       500:
  *         description: Database error
  */
-
 
 /**
  * @swagger
@@ -139,7 +136,6 @@
  *       500:
  *         description: Database error
  */
-
 
 /**
  * @swagger

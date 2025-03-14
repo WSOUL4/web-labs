@@ -1,7 +1,7 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { RefreshToken } from "../Models/refreshToken.model.js";
-import dotenv from "dotenv";
-import express, { Request } from "express";
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { RefreshToken } from '@models/refreshToken.model';
+import dotenv from 'dotenv';
+import express, { Request } from 'express';
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -20,11 +20,12 @@ function generateToken(id: number, login: string): string {
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
-    throw new Error("JWT_SECRET is not defined in environment variables.");
+    throw new Error('JWT_SECRET is not defined in environment variables.');
   }
 
-  const options: jwt.SignOptions = { // Specify the options type
-    expiresIn: "1h",
+  const options: jwt.SignOptions = {
+    // Specify the options type
+    expiresIn: '1h',
   };
 
   // Generate the JWT
@@ -38,11 +39,11 @@ function generateRefreshToken(id: number): string {
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
-    throw new Error("JWT_SECRET is not defined in environment variables.");
+    throw new Error('JWT_SECRET is not defined in environment variables.');
   }
 
   const options: jwt.SignOptions = {
-    expiresIn: "14d",
+    expiresIn: '14d',
   };
 
   // Generate the refresh token
@@ -55,7 +56,7 @@ function decodeToken(token: string): JwtPayload {
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
-    throw new Error("JWT_SECRET is not defined in environment variables.");
+    throw new Error('JWT_SECRET is not defined in environment variables.');
   }
 
   // Decode and verify the token
@@ -65,7 +66,7 @@ function decodeToken(token: string): JwtPayload {
 // Function to get token from headers
 function getTokenFromHeaders(req: Request): string | null {
   const token = req.headers.authorization;
-  return token ? token.replace(/^Bearer\s+/, "") : null;
+  return token ? token.replace(/^Bearer\s+/, '') : null;
 }
 
 // Function to store the refresh token in the database
@@ -79,7 +80,7 @@ async function storeRefreshToken(rt: string): Promise<void> {
       expires_at: dt.exp,
     });
   } catch (error) {
-    console.error("Error storing refresh token:", error);
+    console.error('Error storing refresh token:', error);
   }
 }
 

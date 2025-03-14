@@ -1,5 +1,4 @@
-import { Event } from "../../Models/Event/event.model";
-
+import { Event } from '@models/Event/event.model';
 
 // Function to check if a given event ID is unique
 async function isUniqueId(val: string): Promise<boolean> {
@@ -9,8 +8,8 @@ async function isUniqueId(val: string): Promise<boolean> {
     });
     return count === 0; // Returns true if the ID is unique (count === 0)
   } catch (error) {
-    console.error("Error checking unique event ID:", error);
-    throw new Error("Database error while checking unique event ID");
+    console.error('Error checking unique event ID:', error);
+    throw new Error('Database error while checking unique event ID');
   }
 }
 

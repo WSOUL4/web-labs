@@ -1,6 +1,6 @@
-import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
-import { Options } from "sequelize";
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
+import { Options } from 'sequelize';
 
 dotenv.config();
 
@@ -11,20 +11,20 @@ const dbHost = process.env.DB_HOST as string;
 const dbPort = parseInt(process.env.DB_PORT as string, 10);
 
 const options: Options = {
-    host: dbHost,
-    dialect: "postgres",
-    port: dbPort,
+  host: dbHost,
+  dialect: 'postgres',
+  port: dbPort,
 };
 
 const conn = new Sequelize(dbName, dbUser, dbPassword, options);
 
 conn
-    .authenticate()
-    .then(() => {
-        console.log("Соединение успешно установлено.");
-    })
-    .catch((err) => {
-        console.error("Не удалось установить соединение:", err);
-    });
+  .authenticate()
+  .then(() => {
+    console.log('Соединение успешно установлено.');
+  })
+  .catch((err) => {
+    console.error('Не удалось установить соединение:', err);
+  });
 
 export { conn };

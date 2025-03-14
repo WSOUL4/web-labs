@@ -1,6 +1,7 @@
 /node_modules/
 /dist/
 /build/
-/src/.env
-/src/backend/.env
 .env
+
+
+
