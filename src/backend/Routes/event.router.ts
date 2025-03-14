@@ -1,5 +1,5 @@
-import express from "express";
-import { apiKeyValidation } from "../Controllers/apiKey.check.js";
+import express, { Router } from 'express';
+import { apiKeyValidation } from '../Controllers/apiKey.check';
 import {
   changeById,
   create,
@@ -8,18 +8,23 @@ import {
   getBetween,
   getById,
   getByMy,
-} from "../Controllers/event.controller.js";
-import { passport, strategy } from "../Configs/passport.js";
+} from '../Controllers/event.controller';
+import { passport, strategy } from '../Configs/passport.js';
 
-const router = express.Router();
+const router: Router = express.Router();
 
-router.get("/id", apiKeyValidation, getById);
-router.get("/dates", apiKeyValidation, getBetween);
-router.get("/", apiKeyValidation, getAll);
+// Public Routes
+router.get('/id', apiKeyValidation, getById);
+router.get('/dates', apiKeyValidation, getBetween);
+router.get('/', apiKeyValidation, getAll);
 
+// Authenticate using Passport for the following routes
 router.use(passport.authenticate(strategy, { session: false }));
-router.delete("/id", apiKeyValidation, deleteById);
-router.put("/id", apiKeyValidation, changeById);
-router.post("/", apiKeyValidation, create);
-router.get("/my", getByMy);
+
+// Protected Routes
+router.delete('/id', apiKeyValidation, deleteById);
+router.put('/id', apiKeyValidation, changeById);
+router.post('/', apiKeyValidation, create);
+router.get('/my', getByMy);
+
 export default router;

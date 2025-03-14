@@ -1,8 +1,16 @@
-import express from "express";
-import { getAll, add } from "../Controllers/user.controller.js";
-import { apiKeyValidation } from "../Controllers/apiKey.check.js";
+import express, { Request, Response, NextFunction } from "express";
+import { getAll, add } from "../Controllers/user.controller";
+import { apiKeyValidation } from "../Controllers/apiKey.check";
 
 const usersRouter = express.Router();
-usersRouter.get("", apiKeyValidation, getAll);
-usersRouter.post("/", apiKeyValidation, add); //usersRouter.post('/users/:name/:email/:createdAt/:id', Add);
+
+// TypeScript annotations for the request and response
+usersRouter.get("", apiKeyValidation, (req: Request, res: Response, next: NextFunction) => {
+    getAll(req, res);
+});
+
+usersRouter.post("/", apiKeyValidation, (req: Request, res: Response, next: NextFunction) => {
+    add(req, res);
+});
+
 export default usersRouter;

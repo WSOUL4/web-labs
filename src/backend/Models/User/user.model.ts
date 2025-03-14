@@ -3,12 +3,14 @@ import { conn } from "../../Configs/start.database";
 import bcrypt from "bcryptjs";
 
 interface UserAttributes {
+    id?: number; // Поле id
     name: string;
     email: string;
     password: string;
 }
 
 export class User extends Model<UserAttributes> implements UserAttributes {
+    public id!: number; // Определяем поле id
     public name!: string;
     public email!: string;
     public password!: string;
@@ -18,6 +20,11 @@ export class User extends Model<UserAttributes> implements UserAttributes {
 
 User.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true, // Установка автоинкремента
+            primaryKey: true,    // Указание, что это первичный ключ
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: true, // Можно сделать поле обязательным
@@ -33,8 +40,8 @@ User.init(
         },
     },
     {
-        sequelize: conn, // Изменено с `conn` на `sequelize`
-        modelName: 'User', // Изменено с 'Event' на 'User'
+        sequelize: conn,
+        modelName: 'User',
     }
 );
 

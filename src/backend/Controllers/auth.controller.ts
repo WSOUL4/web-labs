@@ -1,106 +1,99 @@
-import express from "express";
+import express, {NextFunction, Request, Response} from "express";
 import {
   generateToken,
   decodeToken,
   getTokenFromHeaders,
   generateRefreshToken,
   storeRefreshToken,
-} from "./JWT.controller.js";
-//import {CheckRegField} from './auth.prepare.js';
-import { User } from "../Models/User/user.model.js";
-import { RefreshToken } from "../Models/refreshToken.model.js";
+} from "./JWT.controller";
+import { User } from "../Models/User/user.model";
+import { RefreshToken } from "../Models/refreshToken.model";
 import bcrypt from "bcryptjs";
 
-function register(req, res, next) {
-  //console.log(req.body);
+// Function to register a new user
+async function register(req: Request, res: Response, next: NextFunction) {
   try {
-    //name, email, password
-    let p = req.body;
-    User.create({
-      name: p.name,
-      email: p.email,
-      password: p.password,
-    })
-      .then(() => {
-        res.status(200).send(`Registered new user`);
-      })
-      .catch((err) => {
-        res.status(500).send(`Not Registered`);
-      });
+    const { name, email, password } = req.body;
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    res.status(201).send('Registered new user.');
   } catch (error) {
     console.error("Error registering user:", error);
+    res.status(500).send('User registration failed.');
   }
 }
 
-async function login(req, res, next) {
+// Function to log in a user
+async function login(req: Request, res: Response, next: NextFunction) {
   try {
-    //name, email, password
-    let p = req.body;
+    const { login, password } = req.body;
 
-    User.findOne({
-      where: {
-        email: p.login,
-      },
-    })
-      .then(async (user) => {
-        const match = await bcrypt.compare(p.password, user.password);
-        if (match) {
-          //let id=q.id;
-          let token = generateToken(user.id, user.email);
-          let refreshToken = generateRefreshToken(user.id);
-          storeRefreshToken(refreshToken);
-          //console.log(token);
-          res.status(200).send({ token: token, refreshToken: refreshToken });
-          next();
-        } else {
-          res.status(403).send({ message: "Wrong login or password" });
-        }
-      })
-      .catch((err) => {
-        res.status(500).send(`Not logged`);
-      });
+    // Find user by email or username
+    const user = await User.findOne({ where: { email: login } });
+
+    if (!user) {
+      return res.status(403).send({ message: "Wrong login or password" });
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+      const token = generateToken(user.id, user.email);
+      const refreshToken = generateRefreshToken(user.id);
+      await storeRefreshToken(refreshToken);
+
+      res.status(200).send({ token, refreshToken });
+    } else {
+      res.status(403).send({ message: "Wrong login or password" });
+    }
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error during login:", error);
+    res.status(500).send("Login failed.");
   }
 }
 
-function refreshAccessToken(req, res, next) {
-  let rt = getTokenFromHeaders(req);
+// Function to refresh access token
+async function refreshAccessToken(req: Request, res: Response, next: NextFunction) {
+  const rt = getTokenFromHeaders(req);
 
   try {
-    let dt = decodeToken(rt); //id, iat, exp
-    //console.log(dt);
-    //user_id, token, expires_at
+    if (rt!==null){
+    const dt = decodeToken(rt);
 
-    RefreshToken.findOne({
+    // Verify the refresh token
+    const rtoken = await RefreshToken.findOne({
       where: {
         user_id: dt.id,
         token: rt,
-        expires_at: dt.exp,
       },
-    })
-      .then((rtoken) => {
-        if (rtoken.length !== 0) {
-          User.findOne({
-            where: {
-              id: dt.id,
-            },
-          })
-            .then((user) => {
-              let newAccessToken = generateToken(dt.id, user.email);
-              res.status(200).send({ token: newAccessToken });
-              next();
-            })
-            .catch();
-        } else {
-          res.status(403).send(`Token isn't valid at all`);
-        }
-      })
-      .catch((err) => {
-        res.status(500).send(`Server err`);
-      });
+    });
+
+    if (!rtoken) {
+      return res.status(403).send(`Token isn't valid.`);
+    }
+
+    const user = await User.findOne({ where: { id: dt.id } });
+
+    if (user) {
+      const newAccessToken = generateToken(dt.id, user.email);
+      res.status(200).send({ token: newAccessToken });
+    } else {
+      res.status(404).send("User not found.");
+    }
+    }
+
   } catch (e) {
-    res.status(403).send({ message: "Refresh token expired" });
+    console.error("Error refreshing access token:", e);
+    res.status(403).send({ message: "Refresh token expired." });
   }
 }
+
 export { register, login, refreshAccessToken };

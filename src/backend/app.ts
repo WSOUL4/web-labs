@@ -6,7 +6,7 @@ import logger from "morgan";
 import router from "./Routes/main.router";
 import { CustomError } from "./CustomErrors/errors";
 import bodyParser from "body-parser";
-import { passport } from "./Configs/passport";
+import passport from "./Configs/passport";
 
 function appServerLaunch(): Express {
   dotenv.config(); // Для чтения из .env

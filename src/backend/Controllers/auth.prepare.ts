@@ -1,25 +1,22 @@
-import { isUniqueEmail } from "../Utilities/Users/user.utils.js";
+import { Request, Response, NextFunction } from 'express';
+import { isUniqueEmail } from '../Utilities/Users/user.utils.js';
 
-function сheckRegField(req, res, next) {
-  //console.log(req.body);
-  let email = req.body.email;
+function checkRegField(req: Request, res: Response, next: NextFunction) {
+    const email: string = req.body.email;
+    const id: string | undefined = req.body.id; // Assuming `id` may or may not be provided
 
-  let id = req.body.id;
-
-  let e_u = isUniqueEmail(email)
-    .then((e_u) => {
-      if (e_u) {
-        // console.log('GOOD');
-
-        next();
-      } else {
-        res.status(400).send({ message: "Not unique email" });
-        //next();
-        //return;
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    isUniqueEmail(email)
+        .then((isUnique: boolean) => {
+            if (isUnique) {
+                next(); // Proceed to the next middleware/controller
+            } else {
+                res.status(400).send({ message: 'Not unique email' }); // Send error response
+            }
+        })
+        .catch((err: Error) => {
+            console.error(err); // Improved error logging
+            res.status(500).send({ message: 'Internal server error' }); // Handle server errors
+        });
 }
-export { сheckRegField };
+
+export { checkRegField };

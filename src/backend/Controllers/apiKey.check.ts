@@ -1,15 +1,20 @@
-import express from "express";
-import { ValidationError, NotFoundError } from "../CustomErrors/errors.js";
-import dotenv from "dotenv";
-function apiKeyValidation(req, res, next) {
-  // middleware
-  let headers = req.headers;
-  const key = process.env.API_KEY;
-  if (key === headers.api_key) {
-    next();
+import express, { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
+function apiKeyValidation(req: Request, res: Response, next: NextFunction): void {
+  // Middleware to validate API key
+  const apiKey = req.headers['api_key'];
+  const validApiKey = process.env.API_KEY;
+
+  if (validApiKey && apiKey === validApiKey) {
+    next(); // Proceed to next middleware or route handler if valid
   } else {
-    //throw ValidationError;
-    res.status(401).send({ message: "Wrong api-key" });
+    // Return a 401 Unauthorized response if the API key is invalid
+    res.status(401).send({ message: "Wrong API key" });
   }
 }
+
 export { apiKeyValidation };

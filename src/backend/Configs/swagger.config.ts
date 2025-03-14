@@ -26,9 +26,7 @@
  *       500:
  *         description: Database error
  */
-function getAll(req, res) {
-  /* ... */
-}
+
 
 /**
  * @swagger
@@ -57,9 +55,7 @@ function getAll(req, res) {
  *       500:
  *         description: Database error
  */
-function getById(req, res) {
-  /* ... */
-}
+
 
 /**
  * @swagger
@@ -98,9 +94,7 @@ function getById(req, res) {
  *       500:
  *         description: Database error
  */
-function create(req, res) {
-  /* ... */
-}
+
 
 /**
  * @swagger
@@ -145,9 +139,7 @@ function create(req, res) {
  *       500:
  *         description: Database error
  */
-function changeById(req, res) {
-  /* ... */
-}
+
 
 /**
  * @swagger

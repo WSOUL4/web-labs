@@ -1,187 +1,151 @@
-import { Event } from "../Models/Event/event.model.js";
+import { Request, Response } from "express";
+import { Event } from "../Models/Event/event.model";
 import { Op } from "sequelize";
 import { decodeToken, getTokenFromHeaders } from "./JWT.controller.js";
-import { emptyErr, valErr } from "../CustomErrors/errors.js";
+import { emptyErr, valErr } from "../CustomErrors/errors";
 
-//●	Получение списка всех мероприятий (GET /events)
-function getAll(req, res) {
-  Event.findAll()
-    .then((events) => {
-      if (events && events.length === 0) {
-        emptyErr(res);
-        //res.status(404).send(`No events found`);
-      } else if (events) {
-        res.status(200).send(events);
-      }
-    })
-    .catch((err) => {
-      //res.status(500).send(`Database error`);
-      valErr(res);
-      console.log(err);
-    });
-
-  /*.finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
+// ● Получение списка всех мероприятий (GET /events)
+async function getAll(req: Request, res: Response): Promise<void> {
+    try {
+        const events = await Event.findAll();
+        if (events.length === 0) {
+            emptyErr(res);
+        } else {
+            res.status(200).send(events);
+        }
+    } catch (err) {
+        valErr(res);
+        console.log(err);
+    }
 }
 
-//●	Получение одного мероприятия по ID (GET /events/:id)
-function getById(req, res) {
-  const eventId = req.body.id;
+// ● Получение одного мероприятия по ID (GET /events/:id)
+async function getById(req: Request, res: Response): Promise<void> {
+    const eventId = req.body.id; // Changed to use params for ID
 
-  Event.findAll({
-    where: { id: eventId },
-  })
-    .then((events) => {
-      if (events && events.length == 0) {
-        emptyErr(res);
-        //res.status(404).send(`No events found`);
-      } else if (events) {
-        res.status(200).send(events);
-      }
-    })
-    .catch((err) => {
-      //res.status(500).send(`Database error`);
-      valErr(res);
-      console.log(err);
-    });
-
-  /*.finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
+    try {
+        const events = await Event.findAll({
+            where: { id: eventId },
+        });
+        if (events.length === 0) {
+            emptyErr(res);
+        } else {
+            res.status(200).send(events);
+        }
+    } catch (err) {
+        valErr(res);
+        console.log(err);
+    }
 }
-function getByMy(req, res) {
-  //const eventId = req.body.id;
-  let t = getTokenFromHeaders(req);
-  let dt = decodeToken(t);
-  console.log(dt.id);
-  Event.findAll({
-    where: { createdBy: dt.id },
-  })
-    .then((events) => {
-      if (events && events.length == 0) {
-        emptyErr(res);
-        //res.status(404).send(`No events found`);
-      } else if (events) {
-        res.status(200).send(events);
-      }
-    })
-    .catch((err) => {
-      //res.status(500).send(`Database error`);
-      valErr(res);
-      console.log(err);
-    });
 
-  /*.finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
+// ● Получение мероприятий, созданных текущим пользователем
+async function getByMy(req: Request, res: Response): Promise<void> {
+    const token = getTokenFromHeaders(req);
+    const decoded = decodeToken(token);
+
+    try {
+        const events = await Event.findAll({
+            where: { createdBy: decoded.id },
+        });
+        if (events.length === 0) {
+            emptyErr(res);
+        } else {
+            res.status(200).send(events);
+        }
+    } catch (err) {
+        valErr(res);
+        console.log(err);
+    }
 }
-//●	Создание мероприятия (POST /events)
-function create(req, res) {
-  let p = req.body;
-  //console.log(p);
-  Event.create(p)
-    .then(() => {
-      res.status(200).send("Created successfully");
-    })
-    .catch((err) => {
-      //res.status(400).send({mess: `Not added, check fields`});
-      valErr(res);
-      console.log(err);
-    });
 
-  /*.finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
+// ● Создание мероприятия (POST /events)
+async function create(req: Request, res: Response): Promise<void> {
+    const eventData = req.body;
+
+    try {
+        await Event.create(eventData);
+        res.status(200).send("Created successfully");
+    } catch (err) {
+        valErr(res);
+        console.log(err);
+    }
 }
-//●	Обновление мероприятия (PUT /events/:id)
-function changeById(req, res) {
-  let p = req.body;
-  Event.update(
-    {
-      title: p.title,
-      description: p.description,
-      date: p.date,
-      createdBy: p.createdBy,
-    },
-    {
-      where: {
-        id: p.id,
-      },
-    },
-  )
-    .then((rowsUpdated) => {
-      if (rowsUpdated.length > 0) {
-        res.status(200).send(`Event with ID ${p.id} updated successfully.`);
-      } else {
-        emptyErr(res);
-        //res.status(200).send(`No event found with ID ${p.id}.`);
-      }
-    })
-    .catch((err) => {
-      //res.status(400).send({mess: `Not changed, check fields`});
-      valErr(res);
-      console.log(err);
-    });
 
-  /*.finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
+// ● Обновление мероприятия (PUT /events/:id)
+async function changeById(req: Request, res: Response): Promise<void> {
+    const eventData = req.body;
+
+    try {
+        const [rowsUpdated] = await Event.update(
+            {
+                title: eventData.title,
+                description: eventData.description,
+                date: eventData.date,
+                createdBy: eventData.createdBy,
+            },
+            {
+                where: {
+                    id: eventData.id,
+                },
+            },
+        );
+
+        if (rowsUpdated > 0) {
+            res.status(200).send(`Event with ID ${eventData.id} updated successfully.`);
+        } else {
+            emptyErr(res);
+        }
+    } catch (err) {
+        valErr(res);
+        console.log(err);
+    }
 }
-//●	Удаление мероприятия (DELETE /events/:id)
-function deleteById(req, res) {
-  let p = req.body.id;
-  //let p = req.params;
-  //console.log(p);
-  Event.destroy({
-    where: {
-      id: p,
-    },
-  })
-    .then((rowsDeleted) => {
-      if (rowsDeleted > 0) {
-        res.status(200).send(`Event with ID ${p} deleted successfully.`);
-      } else {
-        emptyErr(res);
-        //res.status(404).send(`No event found with ID ${p}.`);
-      }
-    })
-    .catch((err) => {
-      //res.status(400).send(`Not deleted, check id`);
-      valErr(res);
-      console.log(err);
-    });
+
+// ● Удаление мероприятия (DELETE /events/:id)
+async function deleteById(req: Request, res: Response): Promise<void> {
+    const eventId = req.params.id; // Changed to use params for ID
+
+    try {
+        const rowsDeleted = await Event.destroy({
+            where: {
+                id: eventId,
+            },
+        });
+
+        if (rowsDeleted > 0) {
+            res.status(200).send(`Event with ID ${eventId} deleted successfully.`);
+        } else {
+            emptyErr(res);
+        }
+    } catch (err) {
+        valErr(res);
+        console.log(err);
+    }
 }
-//●	Получение мероприятий между date (GET /events/:startDate:endDate)
-function getBetween(req, res) {
-  let startDate = req.body.startDate;
-  let endDate = req.body.endDate;
 
-  Event.findAll({
-    where: {
-      date: {
-        [Op.between]: [startDate, endDate],
-      },
-    },
-  })
-    .then((events) => {
-      console.log(events.length);
-      if (events && events.length == 0) {
-        //throw NotFoundError;
-        res.status(404).send(`No event found between`);
-      } else if (events) {
-        res.status(200).send(events);
-      }
-    })
-    .catch((err) => {
-      //res.status(500).send(`Database error`);
-      valErr(res);
-      console.log(err);
-    });
+// ● Получение мероприятий между date (GET /events/:startDate:endDate)
+async function getBetween(req: Request, res: Response): Promise<void> {
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
 
-  /*.finally(()=>{
-            conn.close() // Always close the connection when done
-                .then()})*/
+    try {
+        const events = await Event.findAll({
+            where: {
+                date: {
+                    [Op.between]: [startDate, endDate],
+                },
+            },
+        });
+
+        if (events.length === 0) {
+            res.status(404).send(`No event found between`);
+        } else {
+            res.status(200).send(events);
+        }
+    } catch (err) {
+        valErr(res);
+        console.log(err);
+    }
 }
 
 export { getAll, getById, create, changeById, deleteById, getBetween, getByMy };

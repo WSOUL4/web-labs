@@ -1,75 +1,88 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { RefreshToken } from "../Models/refreshToken.model.js";
 import dotenv from "dotenv";
-import express from "express";
-import { User } from "../Models/User/user.model.js";
-dotenv.config(); //Для чтения из .env
+import express, { Request } from "express";
 
-function generateToken(id, l) {
-  // Данные, которые вы хотите зашифровать в JWT
-  const payload = {
-    id: id,
-    login: l,
+dotenv.config(); // Load environment variables from .env file
+
+interface TokenPayload {
+  id: number; // Adjust the type according to your user ID type (number/string)
+  login?: string; // Optional: include this if login is part of your payload
+}
+
+// Function to generate a JWT
+function generateToken(id: number, login: string): string {
+  const payload: TokenPayload = {
+    id,
+    login,
   };
 
-  // Секретный ключ для подписи токена
   const secret = process.env.JWT_SECRET;
 
-  // Время жизни токена (например, 1 час)
-  const options = {
-    expiresIn: "1h", // Можно указать "1d" для одного дня, "30m" для 30 минут и т. д.
+  if (!secret) {
+    throw new Error("JWT_SECRET is not defined in environment variables.");
+  }
+
+  const options: jwt.SignOptions = { // Specify the options type
+    expiresIn: "1h",
   };
 
-  // Генерация токена
+  // Generate the JWT
   const token = jwt.sign(payload, secret, options);
-
-  // console.log('Сгенерированный JWT:', token);
   return token;
 }
-function generateRefreshToken(id, t) {
-  const payload = {
-    id: id,
-  };
+
+// Function to generate a refresh token
+function generateRefreshToken(id: number): string {
+  const payload: TokenPayload = { id };
   const secret = process.env.JWT_SECRET;
 
-  const options = {
+  if (!secret) {
+    throw new Error("JWT_SECRET is not defined in environment variables.");
+  }
+
+  const options: jwt.SignOptions = {
     expiresIn: "14d",
   };
+
+  // Generate the refresh token
   const token = jwt.sign(payload, secret, options);
   return token;
 }
-function decodeToken(token) {
-  let decoded = jwt.verify(token, process.env.JWT_SECRET);
-  //console.log(decoded) ;
-  return decoded;
+
+// Function to decode a token
+function decodeToken(token: string): JwtPayload {
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    throw new Error("JWT_SECRET is not defined in environment variables.");
+  }
+
+  // Decode and verify the token
+  return jwt.verify(token, secret) as JwtPayload;
 }
-function getTokenFromHeaders(req) {
-  let token = req.headers.authorization;
-  token = token.replace(/^Bearer\s+/, "");
-  return token;
+
+// Function to get token from headers
+function getTokenFromHeaders(req: Request): string | null {
+  const token = req.headers.authorization;
+  return token ? token.replace(/^Bearer\s+/, "") : null;
 }
-function storeRefreshToken(rt) {
-  let dt = decodeToken(rt); //id, iat, exp
-  //let u_id=dt.id;
-  //console.log(dt);
-  //RefreshToken
+
+// Function to store the refresh token in the database
+async function storeRefreshToken(rt: string): Promise<void> {
+  const dt = decodeToken(rt);
 
   try {
-    //user_id, token, expires_at
-
-    let q = RefreshToken.create({
+    await RefreshToken.create({
       user_id: dt.id,
       token: rt,
       expires_at: dt.exp,
-    })
-      .then((q) => {})
-      .catch((err) => {
-        console.log(err);
-      });
+    });
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error("Error storing refresh token:", error);
   }
 }
+
 export {
   generateToken,
   decodeToken,
