@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 interface UserAttributes {
   id?: number; // Поле id
-  name: string;
+  name?: string;
   email: string;
   password: string;
 }
@@ -47,7 +47,10 @@ User.init(
 
 User.beforeCreate(async (user: User) => {
   console.log('BeforeCreate hook triggered');
-  user.password = await bcrypt.hash(user.password, 10);
+  //console.log(user);
+    const userData :UserAttributes = user.get();
+    const salt = await bcrypt.genSalt(10);
+    userData.password = await bcrypt.hash(userData.password, salt);
   console.log('Password hashed');
 });
 
@@ -57,3 +60,4 @@ async function syncModels() {
 }
 
 syncModels().catch((err) => console.error(err));
+export {UserAttributes}

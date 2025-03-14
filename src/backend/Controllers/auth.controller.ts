@@ -13,16 +13,27 @@ import bcrypt from 'bcryptjs';
 // Function to register a new user
 async function register(req: Request, res: Response, next: NextFunction) {
   try {
-    const { name, email, password } = req.body;
 
+    //const { name, email, password } = req.body;
+    type UserCredentials = {
+      name?: string;
+      email: string;
+      password: string;
+    };
+    const user: UserCredentials = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    };
     // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(user.password, 10);
 
     await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
+          name: user.name,
+      email: user.email,
+      password:user.password
+        }
+        );
 
     res.status(201).send('Registered new user.');
   } catch (error) {
@@ -34,26 +45,40 @@ async function register(req: Request, res: Response, next: NextFunction) {
 // Function to log in a user
 async function login(req: Request, res: Response, next: NextFunction) {
   try {
-    const { login, password } = req.body;
-
+    //const { login, password } = req.body;
+    type UserCredentials = {
+      login: string;
+      password: string;
+    };
+    const user: UserCredentials = {
+      login: req.body.login,
+      password: req.body.password
+    };
     // Find user by email or username
-    const user = await User.findOne({ where: { email: login } });
+    const isFound = await User.findOne({ where: { email: user.login } });
 
-    if (!user) {
+    if (!isFound) {
       return res.status(403).send({ message: 'Wrong login or password' });
+    }else {
+      // Доступ к данным через dataValues или метод get
+      const userData = isFound.get(); // Получаем все значения
+      //console.log(userData); // Теперь вы можете увидеть id, name и другие поля
+
+      const match = await bcrypt.compare(user.password, userData.password);
+
+      if (match) {
+        if (userData.id){
+        const token = generateToken(userData.id, isFound.email);
+        const refreshToken = generateRefreshToken(userData.id);
+        await storeRefreshToken(refreshToken);
+
+        res.status(200).send({ token, refreshToken });
+        }
+      } else {
+        res.status(403).send({ message: 'Wrong login or password' });
+      }
     }
 
-    const match = await bcrypt.compare(password, user.password);
-
-    if (match) {
-      const token = generateToken(user.id, user.email);
-      const refreshToken = generateRefreshToken(user.id);
-      await storeRefreshToken(refreshToken);
-
-      res.status(200).send({ token, refreshToken });
-    } else {
-      res.status(403).send({ message: 'Wrong login or password' });
-    }
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).send('Login failed.');
@@ -84,10 +109,11 @@ async function refreshAccessToken(
         return res.status(403).send(`Token isn't valid.`);
       }
 
-      const user = await User.findOne({ where: { id: dt.id } });
+      const isFound = await User.findOne({ where: { id: dt.id } });
 
-      if (user) {
-        const newAccessToken = generateToken(dt.id, user.email);
+      if (isFound) {
+        const userData = isFound.get();
+        const newAccessToken = generateToken(dt.id, userData.email);
         res.status(200).send({ token: newAccessToken });
       } else {
         res.status(404).send('User not found.');

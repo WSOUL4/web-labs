@@ -1,4 +1,4 @@
-import { Model, DataTypes, ForeignKey } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 import { conn } from '@configs/start.database';
 import { User } from '@models/User/user.model';
 
@@ -7,7 +7,7 @@ interface EventAttributes {
   title: string;
   description: string;
   date: string; // Или Date, если вы хотите использовать Date
-  createdBy: ForeignKey<User['id']>; // Внешний ключ
+  createdBy: number; // Внешний ключ
 }
 
 export class Event extends Model<EventAttributes> implements EventAttributes {
@@ -15,16 +15,16 @@ export class Event extends Model<EventAttributes> implements EventAttributes {
   public title!: string;
   public description!: string;
   public date!: string; // Или Date
-  public createdBy!: ForeignKey<User['id']>; // Внешний ключ
+  public createdBy!: number; // Внешний ключ
 }
 
 Event.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true, // Установка автоинкремента
-      primaryKey: true, // Указание, что это первичный ключ
-    },
+      id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true, // Установка автоинкремента
+          primaryKey: true, // Указание, что это первичный ключ
+      },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -65,3 +65,4 @@ async function syncModels() {
 }
 
 syncModels().catch((err) => console.error(err));
+export {EventAttributes}

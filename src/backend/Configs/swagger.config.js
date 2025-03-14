@@ -26,9 +26,6 @@
  *       500:
  *         description: Database error
  */
-function getAll(req, res) {
-  /* ... */
-}
 
 /**
  * @swagger
@@ -57,9 +54,6 @@ function getAll(req, res) {
  *       500:
  *         description: Database error
  */
-function getById(req, res) {
-  /* ... */
-}
 
 /**
  * @swagger
@@ -98,9 +92,6 @@ function getById(req, res) {
  *       500:
  *         description: Database error
  */
-function create(req, res) {
-  /* ... */
-}
 
 /**
  * @swagger
@@ -115,12 +106,6 @@ function create(req, res) {
  *         description: The API key for authorization
  *         schema:
  *           type: string
- *       - in: path
- *         name: id
- *         required: true
- *         description: Numeric ID of the event
- *         schema:
- *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -128,6 +113,8 @@ function create(req, res) {
  *           schema:
  *             type: object
  *             properties:
+ *               id:
+ *                 type: integer
  *               title:
  *                 type: string
  *               description:
@@ -145,9 +132,6 @@ function create(req, res) {
  *       500:
  *         description: Database error
  */
-function changeById(req, res) {
-  /* ... */
-}
 
 /**
  * @swagger
@@ -162,12 +146,15 @@ function changeById(req, res) {
  *         description: The API key for authorization
  *         schema:
  *           type: string
- *       - in: path
- *         name: id
- *         required: true
- *         description: Numeric ID of the event
- *         schema:
- *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
  */
 
 /**

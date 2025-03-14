@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { User } from '@models/User/user.model';
+import { User,UserAttributes } from '@models/User/user.model';
 import { valErr, emptyErr } from '@errors/errors';
+
 
 // ● Получение списка пользователей (GET /users)
 function getAll(req: Request, res: Response): void {
@@ -22,12 +23,17 @@ function getAll(req: Request, res: Response): void {
 
 // ● Создание нового пользователя (POST /users)
 function add(req: Request, res: Response): void {
-  console.log(req.body);
+  //console.log(req.body);
   try {
     // let id=req.body.id; // Assuming id is automatically generated
-    let p = req.body;
-
-    User.create(p)
+    //let p = req.body;
+    const user: UserAttributes = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    };
+    //console.log(user);
+    User.create(user)
       .then(() => {
         res.status(200).send(`Added new user`);
       })

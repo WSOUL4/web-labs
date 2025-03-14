@@ -13,8 +13,8 @@ export class RefreshToken
   extends Model<RefreshTokenAttributes>
   implements RefreshTokenAttributes
 {
-  public id!: number; // Определяем поле id
-  public user_id!: number;
+  public id?: number; // Определяем поле id
+  public user_id!: number; // Внешний ключ
   public token!: string;
   public expires_at!: number | undefined;
 }
@@ -29,6 +29,10 @@ RefreshToken.init(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false, // Можно сделать поле обязательным
+        references: {
+            model: User,
+            key: 'id',
+        },
     },
     token: {
       type: DataTypes.STRING,

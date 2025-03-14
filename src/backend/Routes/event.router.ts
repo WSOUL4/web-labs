@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import { apiKeyValidation } from '@controllers/apiKey.check';
 import {
   changeById,
-  create,
+  add,
   deleteById,
   getAll,
   getBetween,
@@ -24,7 +24,7 @@ router.use(passport.authenticate(strategy, { session: false }));
 // Protected Routes
 router.delete('/id', apiKeyValidation, deleteById);
 router.put('/id', apiKeyValidation, changeById);
-router.post('/', apiKeyValidation, create);
+router.post('/', apiKeyValidation, add);
 router.get('/my', getByMy);
 
 export default router;

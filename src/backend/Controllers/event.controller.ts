@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Event } from '@models/Event/event.model';
+import { Event,EventAttributes } from '@models/Event/event.model';
 import { Op } from 'sequelize';
 import { decodeToken, getTokenFromHeaders } from './JWT.controller.js';
 import { emptyErr, valErr } from '@errors/errors';
@@ -21,7 +21,7 @@ async function getAll(req: Request, res: Response): Promise<void> {
 
 // ● Получение одного мероприятия по ID (GET /events/:id)
 async function getById(req: Request, res: Response): Promise<void> {
-  const eventId = req.body.id; // Changed to use params for ID
+  const eventId:number = req.body.id; // Changed to use params for ID
 
   try {
     const events = await Event.findAll({
@@ -30,6 +30,7 @@ async function getById(req: Request, res: Response): Promise<void> {
     if (events.length === 0) {
       emptyErr(res);
     } else {
+
       res.status(200).send(events);
     }
   } catch (err) {
@@ -61,21 +62,35 @@ async function getByMy(req: Request, res: Response): Promise<void> {
 }
 
 // ● Создание мероприятия (POST /events)
-async function create(req: Request, res: Response): Promise<void> {
-  const eventData = req.body;
+function add(req: Request, res: Response) {
+  //const eventData = req.body;
+  const eventData:EventAttributes = {
+    title: req.body.title,
+    description: req.body.description,
+    date: req.body.date,
+    createdBy: req.body.createdBy,
+  };
+  console.log(eventData);
 
-  try {
-    await Event.create(eventData);
-    res.status(200).send('Created successfully');
-  } catch (err) {
-    valErr(res);
-    console.log(err);
+     Event.create(eventData).then(() => {
+       res.status(200).send(`Added new event`);
+     })
+         .catch((err) => {
+           console.error('Error adding an event:', err);
+           valErr(res);
+         });
   }
-}
+
 
 // ● Обновление мероприятия (PUT /events/:id)
 async function changeById(req: Request, res: Response): Promise<void> {
-  const eventData = req.body;
+  const eventData:EventAttributes = {
+    id: req.body.id,
+    title: req.body.title,
+    description: req.body.description,
+    date: req.body.date,
+    createdBy: req.body.createdBy,
+  };
 
   try {
     const [rowsUpdated] = await Event.update(
@@ -107,7 +122,7 @@ async function changeById(req: Request, res: Response): Promise<void> {
 
 // ● Удаление мероприятия (DELETE /events/:id)
 async function deleteById(req: Request, res: Response): Promise<void> {
-  const eventId = req.params.id; // Changed to use params for ID
+  const eventId = req.body.id; // Changed to use params for ID
 
   try {
     const rowsDeleted = await Event.destroy({
@@ -129,8 +144,8 @@ async function deleteById(req: Request, res: Response): Promise<void> {
 
 // ● Получение мероприятий между date (GET /events/:startDate:endDate)
 async function getBetween(req: Request, res: Response): Promise<void> {
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
+  const startDate:string = req.body.startDate;
+  const endDate:string = req.body.endDate;
 
   try {
     const events = await Event.findAll({
@@ -140,7 +155,7 @@ async function getBetween(req: Request, res: Response): Promise<void> {
         },
       },
     });
-
+    //console.log(events);
     if (events.length === 0) {
       res.status(404).send(`No event found between`);
     } else {
@@ -152,4 +167,4 @@ async function getBetween(req: Request, res: Response): Promise<void> {
   }
 }
 
-export { getAll, getById, create, changeById, deleteById, getBetween, getByMy };
+export { getAll, getById, add, changeById, deleteById, getBetween, getByMy };
