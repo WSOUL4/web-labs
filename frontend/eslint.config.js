@@ -30,6 +30,7 @@ const eslint = new ESLint({
                 'warn',
                 { allowConstantExport: true },
             ],
+            'no-unused-expressions': 'error',
         },
         linterOptions: {
             reportUnusedDisableDirectives: true, // Переместите сюда
