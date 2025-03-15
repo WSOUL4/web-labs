@@ -31,6 +31,8 @@
     "@types/morgan": "^1.9.9",
     "@types/passport": "^1.0.17",
     "@types/passport-jwt": "^4.0.1",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
     "@types/sequelize": "^4.28.20",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
@@ -69,6 +71,7 @@
     "ansi-regex": "^5.0.1",
     "anymatch": "^3.1.3",
     "array-flatten": "^1.1.1",
+    "axios": "^1.8.3",
     "batch": "^0.6.1",
     "bcryptjs": "^3.0.2",
     "binary-extensions": "^2.3.0",
@@ -85,6 +88,7 @@
     "caniuse-lite": "^1.0.30001672",
     "chokidar": "^3.6.0",
     "chrome-trace-event": "^1.0.4",
+    "classnames": "^2.5.1",
     "clean-css": "^5.3.3",
     "clone-deep": "^4.0.1",
     "colorette": "^2.0.20",
@@ -251,6 +255,8 @@
     "randombytes": "^2.1.0",
     "range-parser": "^1.2.1",
     "raw-body": "^2.5.2",
+    "react-router": "^7.3.0",
+    "react-router-dom": "^7.3.0",
     "readable-stream": "^3.6.2",
     "readdirp": "^3.6.0",
     "rechoir": "^0.8.0",
@@ -323,6 +329,7 @@
     "websocket-extensions": "^0.1.4",
     "which": "^2.0.2",
     "wildcard": "^2.0.1",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "yarn": "^1.22.22"
   }
 }
