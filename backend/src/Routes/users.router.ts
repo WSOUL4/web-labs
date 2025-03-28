@@ -7,7 +7,7 @@ const usersRouter = express.Router();
 // TypeScript annotations for the request and response
 usersRouter.get(
   '',
-  
+
   (req: Request, res: Response, next: NextFunction) => {
     getAll(req, res);
   },
@@ -15,7 +15,7 @@ usersRouter.get(
 
 usersRouter.post(
   '/',
-  
+
   (req: Request, res: Response, next: NextFunction) => {
     add(req, res);
   },

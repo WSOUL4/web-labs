@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src", // Убедитесь, что baseUrl указывает на корень src
+    "paths": {
+      "@components/*": ["components/*"], // Обратите внимание на правильность путей
+      "@utils/*": ["utils/*"],
+      "@assets/*": ["assets/*"],
+      "@api/*": ["api/*"],
+      "@styles/*": ["styles/*"],
+      "@pages/*": ["pages/*"]
+    },
+    "target": "es6",
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./node_modules"]
+}

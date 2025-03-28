@@ -20,11 +20,11 @@ export class Event extends Model<EventAttributes> implements EventAttributes {
 
 Event.init(
   {
-      id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true, // Установка автоинкремента
-          primaryKey: true, // Указание, что это первичный ключ
-      },
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true, // Установка автоинкремента
+      primaryKey: true, // Указание, что это первичный ключ
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -65,4 +65,4 @@ async function syncModels() {
 }
 
 syncModels().catch((err) => console.error(err));
-export {EventAttributes}
+export { EventAttributes };

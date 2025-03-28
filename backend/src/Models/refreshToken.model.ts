@@ -29,10 +29,10 @@ RefreshToken.init(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false, // Можно сделать поле обязательным
-        references: {
-            model: User,
-            key: 'id',
-        },
+      references: {
+        model: User,
+        key: 'id',
+      },
     },
     token: {
       type: DataTypes.STRING,

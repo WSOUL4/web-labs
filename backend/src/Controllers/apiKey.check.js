@@ -1,6 +1,6 @@
-import express from "express";
-import { ValidationError, NotFoundError } from "../CustomErrors/errors.js";
-import dotenv from "dotenv";
+import express from 'express';
+import { ValidationError, NotFoundError } from '../CustomErrors/errors.js';
+import dotenv from 'dotenv';
 function apiKeyValidation(req, res, next) {
   // middleware
   let headers = req.headers;
@@ -9,7 +9,7 @@ function apiKeyValidation(req, res, next) {
     next();
   } else {
     //throw ValidationError;
-    res.status(401).send({ message: "Wrong api-key" });
+    res.status(401).send({ message: 'Wrong api-key' });
   }
 }
 export { apiKeyValidation };

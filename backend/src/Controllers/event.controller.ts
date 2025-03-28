@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Event,EventAttributes } from '../Models/Event/event.model';
+import { Event, EventAttributes } from '../Models/Event/event.model';
 import { Op } from 'sequelize';
 import { decodeToken, getTokenFromHeaders } from './JWT.controller';
 import { emptyErr, valErr } from '../CustomErrors/errors';
@@ -21,7 +21,7 @@ async function getAll(req: Request, res: Response): Promise<void> {
 
 // ● Получение одного мероприятия по ID (GET /events/:id)
 async function getById(req: Request, res: Response): Promise<void> {
-  const eventId:number = req.body.id; // Changed to use params for ID
+  const eventId: number = req.body.id; // Changed to use params for ID
 
   try {
     const events = await Event.findAll({
@@ -30,7 +30,6 @@ async function getById(req: Request, res: Response): Promise<void> {
     if (events.length === 0) {
       emptyErr(res);
     } else {
-
       res.status(200).send(events);
     }
   } catch (err) {
@@ -64,7 +63,7 @@ async function getByMy(req: Request, res: Response): Promise<void> {
 // ● Создание мероприятия (POST /events)
 function add(req: Request, res: Response) {
   //const eventData = req.body;
-  const eventData:EventAttributes = {
+  const eventData: EventAttributes = {
     title: req.body.title,
     description: req.body.description,
     date: req.body.date,
@@ -72,19 +71,19 @@ function add(req: Request, res: Response) {
   };
   console.log(eventData);
 
-     Event.create(eventData).then(() => {
-       res.status(200).send(`Added new event`);
-     })
-         .catch((err) => {
-           console.error('Error adding an event:', err);
-           valErr(res);
-         });
-  }
-
+  Event.create(eventData)
+    .then(() => {
+      res.status(200).send(`Added new event`);
+    })
+    .catch((err) => {
+      console.error('Error adding an event:', err);
+      valErr(res);
+    });
+}
 
 // ● Обновление мероприятия (PUT /events/:id)
 async function changeById(req: Request, res: Response): Promise<void> {
-  const eventData:EventAttributes = {
+  const eventData: EventAttributes = {
     id: req.body.id,
     title: req.body.title,
     description: req.body.description,
@@ -144,8 +143,8 @@ async function deleteById(req: Request, res: Response): Promise<void> {
 
 // ● Получение мероприятий между date (GET /events/:startDate:endDate)
 async function getBetween(req: Request, res: Response): Promise<void> {
-  const startDate:string = req.body.startDate;
-  const endDate:string = req.body.endDate;
+  const startDate: string = req.body.startDate;
+  const endDate: string = req.body.endDate;
 
   try {
     const events = await Event.findAll({

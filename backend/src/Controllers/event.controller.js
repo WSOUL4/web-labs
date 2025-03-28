@@ -1,7 +1,7 @@
-import { Event } from "../Models/Event/event.model.js";
-import { Op } from "sequelize";
-import { decodeToken, getTokenFromHeaders } from "./JWT.controller.js";
-import { emptyErr, valErr } from "../CustomErrors/errors.js";
+import { Event } from '../Models/Event/event.model.js';
+import { Op } from 'sequelize';
+import { decodeToken, getTokenFromHeaders } from './JWT.controller.js';
+import { emptyErr, valErr } from '../CustomErrors/errors.js';
 
 //●	Получение списка всех мероприятий (GET /events)
 function getAll(req, res) {
@@ -82,7 +82,7 @@ function create(req, res) {
   //console.log(p);
   Event.create(p)
     .then(() => {
-      res.status(200).send("Created successfully");
+      res.status(200).send('Created successfully');
     })
     .catch((err) => {
       //res.status(400).send({mess: `Not added, check fields`});

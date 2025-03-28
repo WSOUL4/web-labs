@@ -1,9 +1,9 @@
-import express from "express";
+import express from 'express';
 //import {getParameterByName} from './SharedFuncs.js'
-import { valErr } from "../CustomErrors/errors.js";
-import { User } from "../Models/User/user.model.js";
-import { conn } from "../Configs/start.database.js";
-import { isUniqueEmail, isUniqueId } from "../Utilities/Users/user.utils.js";
+import { valErr } from '../CustomErrors/errors.js';
+import { User } from '../Models/User/user.model.js';
+import { conn } from '../Configs/start.database.js';
+import { isUniqueEmail, isUniqueId } from '../Utilities/Users/user.utils.js';
 
 function checkRequiredField(req, res, next) {
   //console.log(req.body);

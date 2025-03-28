@@ -1,5 +1,5 @@
-import { Event } from "../../Models/Event/event.model.js";
-import { conn } from "../../Configs/start.database.js";
+import { Event } from '../../Models/Event/event.model.js';
+import { conn } from '../../Configs/start.database.js';
 
 function isUniqueId(val) {
   //utils

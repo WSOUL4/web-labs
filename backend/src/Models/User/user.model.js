@@ -1,8 +1,8 @@
-import { Sequelize, DataTypes } from "sequelize";
-import { conn } from "../../Configs/start.database.js";
-import bcrypt from "bcryptjs";
+import { Sequelize, DataTypes } from 'sequelize';
+import { conn } from '../../Configs/start.database.js';
+import bcrypt from 'bcryptjs';
 const User = conn.define(
-  "User",
+  'User',
   {
     name: DataTypes.STRING,
     email: { type: DataTypes.STRING, unique: true, allowNull: false },
@@ -16,13 +16,13 @@ const User = conn.define(
   },
 );
 User.beforeCreate(async (user) => {
-  console.log("BeforeCreate hook triggered");
+  console.log('BeforeCreate hook triggered');
   user.password = await bcrypt.hash(user.password, 10);
-  console.log("Password hashed");
+  console.log('Password hashed');
 });
 async function syncModels() {
   await User.sync({ alter: true }); // Обратите внимание:alter, force: true удалит таблицы перед созданием
-  console.log("Tables synced!");
+  console.log('Tables synced!');
 }
 
 syncModels().catch((err) => console.error(err));

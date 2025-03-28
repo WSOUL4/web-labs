@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { User,UserAttributes } from '../Models/User/user.model';
+import { User, UserAttributes } from '../Models/User/user.model';
 import { valErr, emptyErr } from '../CustomErrors/errors';
-
 
 // ● Получение списка пользователей (GET /users)
 function getAll(req: Request, res: Response): void {
@@ -30,7 +29,7 @@ function add(req: Request, res: Response): void {
     const user: UserAttributes = {
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
     };
     //console.log(user);
     User.create(user)

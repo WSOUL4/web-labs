@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken";
-import { RefreshToken } from "../Models/refreshToken.model.js";
-import dotenv from "dotenv";
-import express from "express";
-import { User } from "../Models/User/user.model.js";
+import jwt from 'jsonwebtoken';
+import { RefreshToken } from '../Models/refreshToken.model.js';
+import dotenv from 'dotenv';
+import express from 'express';
+import { User } from '../Models/User/user.model.js';
 dotenv.config(); //Для чтения из .env
 
 function generateToken(id, l) {
@@ -17,7 +17,7 @@ function generateToken(id, l) {
 
   // Время жизни токена (например, 1 час)
   const options = {
-    expiresIn: "1h", // Можно указать "1d" для одного дня, "30m" для 30 минут и т. д.
+    expiresIn: '1h', // Можно указать "1d" для одного дня, "30m" для 30 минут и т. д.
   };
 
   // Генерация токена
@@ -33,7 +33,7 @@ function generateRefreshToken(id, t) {
   const secret = process.env.JWT_SECRET;
 
   const options = {
-    expiresIn: "14d",
+    expiresIn: '14d',
   };
   const token = jwt.sign(payload, secret, options);
   return token;
@@ -45,7 +45,7 @@ function decodeToken(token) {
 }
 function getTokenFromHeaders(req) {
   let token = req.headers.authorization;
-  token = token.replace(/^Bearer\s+/, "");
+  token = token.replace(/^Bearer\s+/, '');
   return token;
 }
 function storeRefreshToken(rt) {
@@ -67,7 +67,7 @@ function storeRefreshToken(rt) {
         console.log(err);
       });
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error('Error creating user:', error);
   }
 }
 export {

@@ -1,12 +1,12 @@
-import { conn } from "../Configs/start.database.js";
-import { User } from "../Models/User/user.model.js";
-import { valErr, emptyErr } from "../CustomErrors/errors.js";
+import { conn } from '../Configs/start.database.js';
+import { User } from '../Models/User/user.model.js';
+import { valErr, emptyErr } from '../CustomErrors/errors.js';
 
 //import {getParameterByName} from './SharedFuncs.js'
 //●	Получение списка пользователей (GET /users)
 function getAll(req, res) {
   User.findAll({
-    attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+    attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
   }) //We cant show password
     .then((users) => {
       if (users && users.length == 0) {
@@ -46,7 +46,7 @@ function add(req, res) {
                   conn.close() // Always close the connection when done
                       .then()})*/
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error('Error creating user:', error);
   }
 }
 

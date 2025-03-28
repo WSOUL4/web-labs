@@ -1,8 +1,8 @@
-import { Sequelize, DataTypes } from "sequelize";
-import { conn } from "../../Configs/start.database.js";
-import { User } from "../User/user.model.js";
+import { Sequelize, DataTypes } from 'sequelize';
+import { conn } from '../../Configs/start.database.js';
+import { User } from '../User/user.model.js';
 const Event = conn.define(
-  "Event",
+  'Event',
   {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
@@ -16,14 +16,14 @@ const Event = conn.define(
   },
 );
 User.hasMany(Event, {
-  foreignKey: "createdBy",
+  foreignKey: 'createdBy',
 });
 Event.belongsTo(User, {
-  foreignKey: "createdBy",
+  foreignKey: 'createdBy',
 });
 async function syncModels() {
   await Event.sync({ alter: true }); // Обратите внимание: force: true удалит таблицы перед созданием
-  console.log("Tables synced!");
+  console.log('Tables synced!');
 }
 
 syncModels().catch((err) => console.error(err));

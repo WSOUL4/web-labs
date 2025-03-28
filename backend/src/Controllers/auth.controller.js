@@ -1,15 +1,15 @@
-import express from "express";
+import express from 'express';
 import {
   generateToken,
   decodeToken,
   getTokenFromHeaders,
   generateRefreshToken,
   storeRefreshToken,
-} from "./JWT.controller.js";
+} from './JWT.controller.js';
 //import {CheckRegField} from './auth.prepare.js';
-import { User } from "../Models/User/user.model.js";
-import { RefreshToken } from "../Models/refreshToken.model.js";
-import bcrypt from "bcryptjs";
+import { User } from '../Models/User/user.model.js';
+import { RefreshToken } from '../Models/refreshToken.model.js';
+import bcrypt from 'bcryptjs';
 
 function register(req, res, next) {
   //console.log(req.body);
@@ -28,7 +28,7 @@ function register(req, res, next) {
         res.status(500).send(`Not Registered`);
       });
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error('Error registering user:', error);
   }
 }
 
@@ -53,14 +53,14 @@ async function login(req, res, next) {
           res.status(200).send({ token: token, refreshToken: refreshToken });
           next();
         } else {
-          res.status(403).send({ message: "Wrong login or password" });
+          res.status(403).send({ message: 'Wrong login or password' });
         }
       })
       .catch((err) => {
         res.status(500).send(`Not logged`);
       });
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error('Error registering user:', error);
   }
 }
 
@@ -100,7 +100,7 @@ function refreshAccessToken(req, res, next) {
         res.status(500).send(`Server err`);
       });
   } catch (e) {
-    res.status(403).send({ message: "Refresh token expired" });
+    res.status(403).send({ message: 'Refresh token expired' });
   }
 }
 export { register, login, refreshAccessToken };

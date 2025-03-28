@@ -1,4 +1,4 @@
-import { isUniqueEmail } from "../Utilities/Users/user.utils.js";
+import { isUniqueEmail } from '../Utilities/Users/user.utils.js';
 
 function сheckRegField(req, res, next) {
   //console.log(req.body);
@@ -13,7 +13,7 @@ function сheckRegField(req, res, next) {
 
         next();
       } else {
-        res.status(400).send({ message: "Not unique email" });
+        res.status(400).send({ message: 'Not unique email' });
         //next();
         //return;
       }

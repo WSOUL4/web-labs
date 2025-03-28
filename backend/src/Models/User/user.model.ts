@@ -48,9 +48,9 @@ User.init(
 User.beforeCreate(async (user: User) => {
   console.log('BeforeCreate hook triggered');
   //console.log(user);
-    const userData :UserAttributes = user.get();
-    const salt = await bcrypt.genSalt(10);
-    userData.password = await bcrypt.hash(userData.password, salt);
+  const userData: UserAttributes = user.get();
+  const salt = await bcrypt.genSalt(10);
+  userData.password = await bcrypt.hash(userData.password, salt);
   console.log('Password hashed');
 });
 
@@ -60,4 +60,4 @@ async function syncModels() {
 }
 
 syncModels().catch((err) => console.error(err));
-export {UserAttributes}
+export { UserAttributes };

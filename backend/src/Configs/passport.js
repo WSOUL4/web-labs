@@ -1,8 +1,8 @@
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import passport from "passport";
-import { User } from "../Models/User/user.model.js";
-import dotenv from "dotenv";
-import express from "express";
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import passport from 'passport';
+import { User } from '../Models/User/user.model.js';
+import dotenv from 'dotenv';
+import express from 'express';
 dotenv.config(); //Для чтения из .env
 
 const options = {
