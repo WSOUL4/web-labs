@@ -32,7 +32,7 @@ const options: Options = {
       },
     ],
   },
-  apis: ['./src/backend/Configs/swagger.config.js'], // Path to API description files
+  apis: ['./src/Configs/swagger.config.js'], // Path to API description files
 };
 
 // Generate Swagger specification

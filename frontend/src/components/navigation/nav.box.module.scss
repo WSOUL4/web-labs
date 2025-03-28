@@ -1,0 +1,13 @@
+.containerStyle {
+    position: sticky;
+    top: 0;
+    //width: 100%;
+    margin: auto;
+    z-index: 10; 
+    width: 1000px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+}

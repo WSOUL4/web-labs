@@ -10,7 +10,7 @@ const authRouter = express.Router();
 
 // Define the routes
 authRouter.post('/register', checkRegField, register);
-authRouter.get('/login', login);
+authRouter.post('/login', login);
 authRouter.post('/refresh', refreshAccessToken);
 
 // Export the router

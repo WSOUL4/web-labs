@@ -8,6 +8,7 @@ import HomePage from './pages/Main/main';
 import LoginPage from './pages/Login/login';
 import EventPage from './pages/Events/events';
 import RegisterPage from './pages/Register/register';
+import NotFoundPage from './pages/404/404';
 /*
 function App() {
   const [count, setCount] = useState(0)
@@ -26,7 +27,7 @@ const App: React.FC = () =>{
   <Route path="/auth/login" element={<LoginPage />} />
   <Route path="/auth/register" element={<RegisterPage />} />
   <Route path="/events" element={<EventPage />} />
-
+  <Route path="/404" element={<NotFoundPage />} />
 </Routes>
   </Router>
 );
