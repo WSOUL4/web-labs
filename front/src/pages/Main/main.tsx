@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import NavBox from '../../components/navigation/nav.box';
 import logo from '../../assets/bigLogo.png';
+import styles from '../../styles/general.module.scss';
 const HomePage: React.FC = () => {
   useEffect(() => {
     //document.body.style.display = 'flex';
@@ -14,7 +15,7 @@ const HomePage: React.FC = () => {
   return (
     <div>
       <NavBox />
-      <h1>Добро пожаловать на главную страницу!</h1>
+      <h1 className={styles.h1}>Добро пожаловать на главную страницу!</h1>
       <img
         src={logo}
         alt="Описание изображения"

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {registerUser} from '../../../api/authService';
-
+import styles from './register.form.module.scss';
 const RegisterForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -12,7 +12,6 @@ const RegisterForm: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [redirectCountdown, setRedirectCountdown] = useState<number>(5);
-  const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -26,24 +25,24 @@ const RegisterForm: React.FC = () => {
     setError(null);
     setLoading(true);
 
-    registerUser(email, name, password) // Используем функцию registerUser
-            .then((response) => {
-                console.log('Регистрация успешна:', response);
-                setSuccessMessage(
-                    'Регистрация успешна! Вы будете перенаправлены через 5 секунд.'
-                );
-                startRedirectCountdown();
-            })
-            .catch((error) => {
-                setError(
-                    error.response
-                        ? error.response.data.message
-                        : 'Произошла ошибка при регистрации'
-                );
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    registerUser(email, name, password)
+      .then((response) => {
+        console.log('Регистрация успешна:', response);
+        setSuccessMessage(
+          'Регистрация успешна! Вы будете перенаправлены через 5 секунд.'
+        );
+        startRedirectCountdown();
+      })
+      .catch((error) => {
+        setError(
+          error.response
+            ? error.response.data.message
+            : 'Произошла ошибка при регистрации'
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const startRedirectCountdown = () => {
@@ -60,15 +59,14 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit}>
-        <h2>Регистрация</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+        {error && <p className={styles.error}>{error}</p>}
+        {successMessage && <p className={styles.success}>{successMessage}</p>}
         {successMessage && (
           <p>Перенаправление через {redirectCountdown} секунд(ы)...</p>
         )}
-        <div>
+        <div className={styles.inputGroup}>
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -78,16 +76,16 @@ const RegisterForm: React.FC = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="name">Name:</label>
+        <div className={styles.inputGroup}>
+          <label htmlFor="name">Имя:</label>
           <input
-            type="name"
+            type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div>
+        <div className={styles.inputGroup}>
           <label htmlFor="password">Пароль:</label>
           <input
             type="password"
@@ -97,7 +95,7 @@ const RegisterForm: React.FC = () => {
             required
           />
         </div>
-        <div>
+        <div className={styles.inputGroup}>
           <label htmlFor="confirmPassword">Подтвердите пароль:</label>
           <input
             type="password"

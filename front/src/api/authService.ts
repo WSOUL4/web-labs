@@ -1,4 +1,4 @@
-import { saveTokens } from '../utils/localStorage';
+import { saveTokens,getHeadersRefreshToken } from '../utils/localStorage';
 import axios from 'axios';
 
 
@@ -10,6 +10,8 @@ export const login = async (email: string, password: string) => {
             login: email,
             password: password,
         });
+        const { token, refreshToken } = response.data;
+        saveTokens(token, refreshToken);
         return response.data; // Возвращаем данные ответа
     } catch (error) {
         throw error; // Если ошибка, пробрасываем её дальше
@@ -22,5 +24,19 @@ export const registerUser = async (email: string, name: string, password: string
         name,
         password,
     });
+    
     return response.data; // Возвращаем данные ответа
+};
+
+export const refresh = async () => {
+    try {
+        const response = await axios.post(`${apiUrl}/auth/refresh`, {
+            headers: getHeadersRefreshToken()
+        });
+        const { token } = response.data;
+        saveTokens(token,undefined);
+        return response.data; // Возвращаем данные ответа
+    } catch (error) {
+        throw error; // Если ошибка, пробрасываем её дальше
+    }
 };

@@ -5,7 +5,7 @@ export const handleLogout = () => {
   window.location.reload();
 };
 
-export const saveTokens = (token: string, refreshToken: string) => {
+export const saveTokens = (token: string|undefined, refreshToken: string|undefined) => {
   if (token) {
     localStorage.setItem('token', token);
   }
@@ -19,4 +19,17 @@ export const isLoggedIn = (): boolean => {
   
   return Boolean(token && refreshToken);
 };
-//export {handleLogout, saveTokens}
+export const getHeadersRefreshToken= () => {
+  return {
+    'Content-Type': 'application/json', // Укажите нужный тип содержимого
+    'Authorization': `Bearer ${localStorage.getItem('refreshToken')}`, // Пример добавления авторизационного токена
+    
+};
+}
+export const getHeadersToken = () => {
+  return {
+      'Content-Type': 'application/json', // Укажите нужный тип содержимого
+      'Authorization': `Bearer ${localStorage.getItem('token')}`, // Пример добавления авторизационного токена
+      
+  };
+};

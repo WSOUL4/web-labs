@@ -16,6 +16,7 @@ const router: Router = express.Router();
 // Public Routes
 router.get('/id', getById);
 router.get('/dates', getBetween);
+router.post('/dates', getBetween);
 router.get('/', getAll);
 
 // Authenticate using Passport for the following routes

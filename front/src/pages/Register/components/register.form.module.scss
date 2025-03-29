@@ -1,0 +1,61 @@
+.container {
+    display: flex;
+    flex-direction: column; /* Выравнивание по вертикали */
+    align-items: center; /* Выравнивание по началу */
+    padding: 20px; /* Общие отступы */
+    max-width: 400px; /* Максимальная ширина формы */
+    margin: auto; /* Центрируем форму по горизонтали */
+    background-color: #f9f9f900; /* Фон формы */
+    border-radius: 0px; /* Закругления углов формы */
+    //box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+  }
+  
+  h2 {
+    margin-bottom: 20px; /* Отступ снизу для заголовка */
+    font-size: 24px; /* Размер заголовка */
+    color: #d8d8d8; /* Цвет заголовка */
+  }
+  
+  .inputGroup {
+    margin-bottom: 15px; /* Отступ снизу между полями ввода */
+    width: 100%; /* Ширина блоков ввода */
+  }
+  
+  label {
+    margin-bottom: 5px; /* Отступ снизу для меток */
+    display: block; /* Блочный элемент для меток */
+  }
+  
+  input {
+    width: 100%; /* Ширина полей ввода */
+    padding: 10px; /* Обертка внутри полей ввода */
+    border: 1px solid #ccc; /* Рамка полей ввода */
+    border-radius: 0px; /* Закругления углов полей ввода */
+    font-size: 16px; /* Размер текста */
+  }
+  
+  button {
+    background-color: #1a1a1a; /* Основной цвет фона для кнопок */
+    color: #ffffff; /* Цвет текста */
+    border: 1px solid #ccc; /* Рамка для кнопок */
+    border-radius: 0px; /* Закругленные углы (можно изменить при желании) */
+    padding: 10px; /* Обертка внутри кнопки */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s, color 0.3s; /* Плавный переход для изменений */
+    
+    &:hover {
+      background-color: #007bff; /* Цвет фона при наведении */
+      color: white; /* Цвет текста при наведении */
+    }
+  }
+  
+  .error {
+    color: red; /* Цвет для сообщений об ошибках */
+    margin-bottom: 10px; /* Отступ между сообщениями */
+  }
+  
+  .success {
+    color: green; /* Цвет для успешных сообщений */
+    margin-bottom: 10px; /* Отступ между сообщениями */
+  }

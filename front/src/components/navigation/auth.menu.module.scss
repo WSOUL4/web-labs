@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000000c4;
+  background-color: #00000000;
   padding: 10px;
   height: 60px; // Устанавливаем фиксированную высоту
   width: fit-content;
@@ -24,12 +24,13 @@
 .nav_link,
 .nav_button {
   // Добавляем общий стиль для навигационных ссылок и кнопок
-  background-color: #000000c4;
-  text-decoration: none; // Убираем подчеркивание для ссылок
+  
   padding: 10px 15px; // Отступы для кнопок и ссылок
-  color: #007bff; // Цвет текста
-  border: 1px solid #007bff; // Рамка для кнопок и ссылок
-  border-radius: 5px; // Закругленные углы
+  background-color: #1a1a1a;
+  text-decoration: none; // Убираем подчеркивание для ссылок
+  color: #ffffff; // Цвет текста
+  border: 1px solid #ccc; // Рамка для кнопок и ссылок
+  border-radius: 0px; // Закругленные углы
   transition:
     background-color 0.3s,
     color 0.3s; // Плавный переход цвета

@@ -9,6 +9,7 @@ import LoginPage from './pages/Login/login';
 import EventPage from './pages/Events/events';
 import RegisterPage from './pages/Register/register';
 import NotFoundPage from './pages/404/404';
+import { EventsProvider } from './pages/Events/components/eventsContext';
 /*
 function App() {
   const [count, setCount] = useState(0)
@@ -21,15 +22,18 @@ function App() {
 }*/
 const App: React.FC = () => {
   return (
+    <EventsProvider>
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/events" element={<EventPage />} />
-        <Route path="/404" element={<NotFoundPage />} />
+        {/* Соответствие для всех остальных маршрутов */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
+    </EventsProvider>
   );
 };
 

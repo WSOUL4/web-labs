@@ -1,8 +1,25 @@
-.boxItem {
+
+.instance {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 0px;
-  margin: 5px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px 0;
+  transition: background-color 0.3s;
+  background-color: #1a1a1a;
+
+  &:hover {
+    background-color: #007bff; // Цвет фона при наведении
+    color: white; // Цвет текста при наведении
+    border: 2px solid #ffffff;
+  }
+
+  h3 {
+    margin: 0 0 10px 0;
+  }
+
+  p {
+    margin: 5px 0;
+  }
 }

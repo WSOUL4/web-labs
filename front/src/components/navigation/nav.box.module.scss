@@ -1,13 +1,33 @@
 .containerStyle {
+  background-color: #1a1a1aad;
   position: sticky;
   top: 0;
-  //width: 100%;
   margin: auto;
   z-index: 10;
-  width: 1000px;
+  width: 80vw; // Ширина контейнера
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  padding: 10px; // Добавьте отступы по желанию
+
+  // Добавляем медиазапросы для адаптивности
+  @media (max-width: 320px) {
+    width: 95vw; // Увеличиваем ширину на маленьких экранах
+    flex-direction: column; // Меняем направление на колонку для лучшей совместимости
+    align-items: center; // Выравнивание по началу
+    justify-content: space-evenly;
+  }
+
+  @media (min-width: 321px) and (max-width: 480px) {
+    width: 90vw; // Корректируем ширину для устройств между 321px и 480px
+  }
+
+  // Дополнительные медиазапросы для других разрешений, если это необходимо
+  @media (min-width: 481px) {
+    // Стили по умолчанию
+    width: 80vw; // Возвращаем ширину для стандартных экранов
+    padding: 15px; // Опционально; увеличение отступов
+  }
 }
