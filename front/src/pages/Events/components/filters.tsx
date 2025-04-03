@@ -4,10 +4,11 @@ import { findAll, findMy, findBetweenDates } from '../../../api/eventService';
 import { refresh } from '../../../api/authService';
 import { useEvents } from './eventsContext'; // Импорт контекст
 import styles from './filters.module.scss';
+
 type FilterOption = 'My' | 'Dates' | 'All';
 
 const DropdownFilter: React.FC = () => {
-  const { setEvents } = useEvents(); // Получаем setEvents из контекста
+  const { setEvents,clearEvents } = useEvents(); // Получаем setEvents из контекста
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>('All');
   const [dateStart, setDateStart] = useState<string>('');
   const [dateEnd, setDateEnd] = useState<string>('');
@@ -29,7 +30,8 @@ const DropdownFilter: React.FC = () => {
   };
 
   const handleSearch = () => {
-    //console.log('SEARCH');
+    
+    clearEvents();
     if (selectedFilter === 'All') {
       findAll()
         .then((response) => {

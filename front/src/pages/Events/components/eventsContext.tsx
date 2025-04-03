@@ -1,7 +1,7 @@
 // EventsContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 
-interface EventData {
+export interface EventData {
   id: number;
   title: string;
   description: string; 
@@ -12,15 +12,18 @@ interface EventData {
 interface EventsContextType {
   events: EventData[];
   setEvents: React.Dispatch<React.SetStateAction<EventData[]>>;
+  clearEvents: () => void;
 }
 
 const EventsContext = createContext<EventsContextType | undefined>(undefined);
 
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [events, setEvents] = useState<EventData[]>([]);
-
+  const clearEvents = () => {
+    setEvents([]); // Очищаем массив событий
+  };
   return (
-    <EventsContext.Provider value={{ events, setEvents }}>
+    <EventsContext.Provider value={{ events, setEvents, clearEvents }}>
       {children}
     </EventsContext.Provider>
   );

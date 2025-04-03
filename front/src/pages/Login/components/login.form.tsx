@@ -10,6 +10,7 @@ const LoginForm: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [redirectCountdown, setRedirectCountdown] = useState<number>(5);
+  //const [button, setButtonState]= useState<boolean>(true);
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -19,7 +20,7 @@ const LoginForm: React.FC = () => {
     login(email, password)
       .then((response) => {
           setSuccessMessage(
-              'Вы успешно вошли в систему! Вы будете перенаправлены через 5 секунд.'
+              'Вы успешно вошли в систему!'
           );
           startRedirectCountdown();
       })
@@ -36,7 +37,7 @@ const LoginForm: React.FC = () => {
   };
 
   const startRedirectCountdown = () => {
-      let countdown = 5;
+      let countdown = 0;
       setRedirectCountdown(countdown);
       const timer = setInterval(() => {
           countdown -= 1;
