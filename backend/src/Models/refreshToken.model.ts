@@ -29,10 +29,10 @@ RefreshToken.init(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false, // Можно сделать поле обязательным
-      references: {
+      /*references: {
         model: User,
         key: 'id',
-      },
+      },*/
     },
     token: {
       type: DataTypes.STRING,
@@ -50,15 +50,11 @@ RefreshToken.init(
   },
 );
 
-User.hasMany(RefreshToken, {
-  foreignKey: 'user_id',
-});
-RefreshToken.belongsTo(User, {
-  foreignKey: 'user_id',
-});
+
+/*
 async function syncModels() {
-  await RefreshToken.sync({ alter: true }); // Обратите внимание: force: true удалит таблицы перед созданием
+  await RefreshToken.sync({ force: true }); // Обратите внимание: force: true удалит таблицы перед созданием
   console.log('Tables synced!');
 }
 
-syncModels().catch((err) => console.error(err));
+syncModels().catch((err) => console.error(err));*/

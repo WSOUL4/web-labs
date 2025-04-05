@@ -1,8 +1,10 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { conn } from '../../Configs/start.database';
+import {Event} from '../Event/event.model';
+import { RefreshToken } from '../refreshToken.model';
 import bcrypt from 'bcryptjs';
 
-interface UserAttributes {
+export interface UserAttributes {
   id?: number; // Поле id
   name?: string;
   email: string;
@@ -44,7 +46,18 @@ User.init(
     modelName: 'User',
   },
 );
-
+User.hasMany(Event, {
+  foreignKey: 'createdBy',
+});
+User.hasMany(RefreshToken, {
+  foreignKey: 'user_id',
+});
+RefreshToken.belongsTo(User, {
+  foreignKey: 'user_id',
+});
+Event.belongsTo(User, {
+  foreignKey: 'createdBy',
+});
 User.beforeCreate(async (user: User) => {
   console.log('BeforeCreate hook triggered');
   //console.log(user);
@@ -56,8 +69,10 @@ User.beforeCreate(async (user: User) => {
 
 async function syncModels() {
   await User.sync({ alter: true }); // alter не удалит таблицы
+  await Event.sync({ alter: true });
+  await RefreshToken.sync({ alter: true }); 
   console.log('Tables synced!');
 }
 
 syncModels().catch((err) => console.error(err));
-export { UserAttributes };
+//export { UserAttributes };

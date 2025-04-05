@@ -10,13 +10,14 @@
   
   .select {
     //white-space: ;
-    
+    color: #ffffff;
     margin-bottom: 16px; // Отступ снизу между select и следующими элементами
     margin-right: 16px;
     background-color: #1a1a1a;
     padding: 10px;
     
     border: 1px solid #ccc;
+    border-radius: 0px;
     text-align: center;
     font-size: 1em;
     
@@ -53,5 +54,6 @@
   }
 option {
     text-align: center;
+    
     
 }

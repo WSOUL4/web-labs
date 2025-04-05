@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import { conn } from '../../Configs/start.database';
 import { User } from '../User/user.model';
 
-interface EventAttributes {
+export interface EventAttributes {
   id?: number; // Поле id
   title: string;
   description: string;
@@ -40,10 +40,10 @@ Event.init(
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
+      /*references: {
         model: User,
         key: 'id',
-      },
+      },*/
     },
   },
   {
@@ -52,17 +52,13 @@ Event.init(
   },
 );
 
-User.hasMany(Event, {
-  foreignKey: 'createdBy',
-});
-Event.belongsTo(User, {
-  foreignKey: 'createdBy',
-});
+
+/*
 
 async function syncModels() {
-  await Event.sync({ alter: true });
+  await Event.sync({ force: true });
   console.log('Tables synced!');
 }
 
 syncModels().catch((err) => console.error(err));
-export { EventAttributes };
+//export { EventAttributes };*/
