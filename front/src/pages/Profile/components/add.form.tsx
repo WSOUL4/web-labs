@@ -5,11 +5,10 @@ import styles from './event.form.module.scss';
 interface EventFormProps {
     event: EventData;
     onClose: () => void;
-    onSaveChange: (updatedEvent: EventData) => void;
-    onDelete: (updatedEvent: EventData) => void;
+    onAdd: (newEvent: EventData) => void;
 }
 
-const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onDelete }) => {
+const EventAddForm: React.FC<EventFormProps> = ({ event, onClose, onAdd }) => {
     const formRef = useRef<HTMLDivElement>(null);
     const [title, setTitle] = useState(event.title);
     const [description, setDescription] = useState(event.description);
@@ -22,7 +21,7 @@ const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onD
         }
     };
 
-    const handleSave = () => {
+    const handleAdd = () => {
         const selectedDate = new Date(date);
         const today = new Date();
         today.setHours(0, 0, 0, 0); // Убираем время из текущей даты
@@ -31,19 +30,20 @@ const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onD
             setErrorMessage('Дата не может быть раньше сегодняшнего дня.');
             return;
         }
-        if (description.length>255 || title.length>255){
-            setErrorMessage('Длина текста должна быть не больше 255 символов.');
+        if (description.length>255 || title.length>255 ){
+            setErrorMessage('Длина текста должна быть не больше 255 символов и не пуста.');
             return;
         }
-        const updatedEvent = { ...event, title, description, date };
-        onSaveChange(updatedEvent);
+        if (title.length<=0){
+            setErrorMessage('Пустое название.');
+            return;
+        }
+        const newEvent = { ...event, title, description, date };
+        //console.log('LEN:',title.length);
+        onAdd(newEvent);
         onClose();
     };
-    const handleDelete=()=>{
-        const updatedEvent = { ...event, title, description, date };
-        onDelete(updatedEvent);
-        onClose();
-    }
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
 
@@ -54,8 +54,7 @@ const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onD
 
     return (
         <div ref={formRef} className={styles.modal}>
-            <h2>Редактировать событие</h2>
-            <button type="button" onClick={handleDelete}>Удалить</button>
+            <h2>Добавить событие</h2>
             <form>
             {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}
                 <label>
@@ -73,11 +72,11 @@ const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onD
                 
                 
 
-                <button type="button" onClick={handleSave}>Сохранить</button>
+                <button type="button" onClick={handleAdd}>Добавить</button>
                 <button type="button" onClick={onClose}>Закрыть</button>
             </form>
         </div>
     );
 };
 
-export default EventForm;
+export default EventAddForm;

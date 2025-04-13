@@ -24,6 +24,7 @@ router.use(passport.authenticate(strategy, { session: false }));
 
 // Protected Routes
 router.delete('/id', deleteById);
+router.post('/id', deleteById);
 router.put('/id', changeById);
 router.post('/', add);
 router.get('/my', getByMy);

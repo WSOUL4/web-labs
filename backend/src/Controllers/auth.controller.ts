@@ -143,7 +143,7 @@ async function getProfile(
       if (!profileData) {
         return res.status(403).send(`Token isn't valid.`);
       }else{
-        res.status(200).send({ name: profileData.name, email: profileData.email });
+        res.status(200).send({ name: profileData.name, email: profileData.email, id:profileData.id });
       }}}
   catch (e) {
       console.error('Error fetching a profile:', e);

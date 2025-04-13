@@ -8,6 +8,12 @@ export interface EventData {
   date: string;
   createdBy: number;
 }
+export interface EventDataAdd {
+  title: string;
+  description: string; 
+  date: string|Date;
+  createdBy: number;
+}
 
 interface EventsContextType {
   events: EventData[];

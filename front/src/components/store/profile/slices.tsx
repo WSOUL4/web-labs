@@ -9,6 +9,7 @@ import { refresh } from '../../../api/authService';
 interface ProfileData {
   name: string;
   email: string;
+  id: number;
 }
 
 interface ProfileState {

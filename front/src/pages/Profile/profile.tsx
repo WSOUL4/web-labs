@@ -6,11 +6,12 @@ import { fetchProfile } from '../../components/store/profile/slices';
 import { fetchMyEvents, updateEvents } from '../../components/store/events/slices';
 import styles from '../../styles/general.module.scss';
 import stylesProfile from './profile.module.scss';
-import { EventData } from '../Events/components/eventsContext';
+import { EventData,EventDataAdd } from '../Events/components/eventsContext';
 import stylesEvent from '../Events/components/event.instance.module.scss';
 import stylesEventContainer from '../Events/components/container.module.scss';
 import EventForm from './components/event.form';
-import {changeEvent} from '../../api/eventService';
+import AddForm from './components/add.form';
+import {changeEvent, addEvent, deleteEvent} from '../../api/eventService';
 import { refresh } from '../../api/authService';
 const ProfilePage: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,7 +24,7 @@ const ProfilePage: React.FC = () => {
     // Состояние для управления формой
     const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
-
+    const [isAddFormOpen, setIsAddFormOpen] = useState(false);
     useEffect(() => {
         dispatch(fetchProfile()); 
         dispatch(fetchMyEvents());
@@ -87,6 +88,83 @@ if (dataEvents) {
 
 }
 };
+const handleAddClick = () => {
+    const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+        const todayString: string=today.toString();
+    if (dataProfile){
+        const event:EventData={id:0 ,title:'', description:'', date:todayString, createdBy:dataProfile.id};
+        setSelectedEvent(event);
+        setIsAddFormOpen(true);
+    }
+    
+    //
+    
+};
+const closeAddForm = () => {
+    setIsAddFormOpen(false);
+    setSelectedEvent(null);
+
+};
+const addNew= (newEvent: EventData) => {
+    if( dataProfile){
+        addEvent({
+            id:0,
+            title:newEvent.title,
+            description:newEvent.description,
+            date:newEvent.date,
+            createdBy:dataProfile.id,
+        })
+        .then((response) => {
+            console.log('Успешный запрос:', response);
+            dispatch(fetchMyEvents());
+        })
+        .catch((error) => {
+            const errorCode = error.response?.status;
+            const errorMessage = error.response?.data?.message || 'Что-то пошло не так.';
+        
+            if (errorCode === 404) {
+                setErrorMessage('Ошибка 404: Не найдено.');
+            } else if (errorCode === 500) {
+                setErrorMessage('Ошибка 500: Внутренняя ошибка сервера. Попробуйте позже.');
+            } else if (errorCode === 401) {
+                setErrorMessage('Ошибка 401: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё 1 раз.');
+                refresh();
+            } else {
+                setErrorMessage(`Ошибка ${errorCode}: ${errorMessage}`);
+            }
+            });
+        
+    }
+
+        
+};
+const delEvent=(updatedEvent: EventData)=>{
+    //console.log(updatedEvent);
+            
+            deleteEvent(updatedEvent.id)
+                .then((response) => {
+                    console.log('Успешный запрос:', response);
+                    dispatch(fetchMyEvents());
+                })
+                .catch((error) => {
+                        const errorCode = error.response?.status;
+                        const errorMessage = error.response?.data?.message || 'Что-то пошло не так.';
+                
+                        if (errorCode === 404) {
+                            setErrorMessage('Ошибка 404: Не найдено.');
+                        } else if (errorCode === 500) {
+                            setErrorMessage('Ошибка 500: Внутренняя ошибка сервера. Попробуйте позже.');
+                        } else if (errorCode === 401) {
+                            setErrorMessage('Ошибка 401: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё 1 раз.');
+                            refresh();
+                        } else {
+                            setErrorMessage(`Ошибка ${errorCode}: ${errorMessage}`);
+                        }
+                        });
+                };
+
+
     return (
         <div>
             <NavBox />
@@ -104,12 +182,18 @@ if (dataEvents) {
             )}
 
             {dataProfile && (
+                <>
                 <div className={stylesProfile.profileContainer}>
                     <h2 className={stylesProfile.profileHeader}>Имя: </h2>
                     <p className={stylesProfile.profileText}>{dataProfile.name}</p>
                     <h2 className={stylesProfile.profileHeader}>Email: </h2>
                     <p className={stylesProfile.profileText}>{dataProfile.email}</p>
+                    <h2 className={stylesProfile.profileHeader}>Ваш ID: </h2>
+                    <p className={stylesProfile.profileText}>{dataProfile.id}</p>
                 </div>
+                <button type="button" onClick={()=>handleAddClick()}>Добавить новый ивент</button>
+                <p></p>
+                </>
             )}
 
 
@@ -128,11 +212,16 @@ if (dataEvents) {
             {isFormOpen && selectedEvent && (
                 <>
                 <div className={stylesProfile.overlay} onClick={closeForm}></div>
-                <EventForm event={selectedEvent} onClose={closeForm} onSaveChange={saveChange} />
+                <EventForm event={selectedEvent} onClose={closeForm} onSaveChange={saveChange} onDelete={delEvent} />
+            </>
+            )}
+           {isAddFormOpen && selectedEvent && (
+                <>
+                <div className={stylesProfile.overlay} onClick={closeForm}></div>
+                <AddForm event={selectedEvent} onClose={closeAddForm} onAdd={addNew} />
             </>
             )}
            
-            
         </div>
     );
 };

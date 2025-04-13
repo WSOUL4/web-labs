@@ -37,6 +37,7 @@ export const findBetweenDates = async (sD: string, eD: string) => {
 export const changeEvent = async (event: EventData) => {
     try {
         //console.log(event);
+        
         const headers = getHeadersToken();
         const response = await axios.put(`${apiUrl}/events/id`, { 
             title: event.title,
@@ -44,6 +45,43 @@ export const changeEvent = async (event: EventData) => {
             date: event.date,
             createdBy: event.createdBy,
             id:event.id,
+        }, {
+            headers: headers
+        });
+
+        return response.data; 
+    } catch (error) {
+        throw error; 
+    }
+};
+
+export const addEvent = async (event: EventData) => {
+    try {
+        //console.log(event);
+        
+        const headers = getHeadersToken();
+        const response = await axios.post(`${apiUrl}/events/`, { 
+            title: event.title,
+            description: event.description,
+            date: event.date,
+            createdBy: event.createdBy,
+        }, {
+            headers: headers
+        });
+
+        return response.data; 
+    } catch (error) {
+        throw error; 
+    }
+};
+
+export const deleteEvent = async (eventId:number) => {
+    try {
+        //console.log(event);
+        
+        const headers = getHeadersToken();
+        const response = await axios.post(`${apiUrl}/events/id`, { 
+            id:eventId,
         }, {
             headers: headers
         });
