@@ -20,12 +20,15 @@ const NavMenu: React.FC = () => {
               </Link>
             </li>
             <li className={styles.nav_item}>
+            <Link className={styles.nav_link} to="/">
               <button
                 className={`${styles.nav_link} ${styles.nav_button}`}
+
                 onClick={handleLogout}
               >
                 Logout
               </button>
+              </Link>
             </li>
           </>
         ) : (

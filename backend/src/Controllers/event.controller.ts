@@ -7,7 +7,9 @@ import { emptyErr, valErr } from '../CustomErrors/errors';
 // ● Получение списка всех мероприятий (GET /events)
 async function getAll(req: Request, res: Response): Promise<void> {
   try {
-    const events = await Event.findAll();
+    const events = await Event.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
     if (events.length === 0) {
       emptyErr(res);
     } else {
@@ -26,6 +28,7 @@ async function getById(req: Request, res: Response): Promise<void> {
   try {
     const events = await Event.findAll({
       where: { id: eventId },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
     if (events.length === 0) {
       emptyErr(res);
@@ -47,6 +50,7 @@ async function getByMy(req: Request, res: Response): Promise<void> {
       const decoded = decodeToken(token);
       const events = await Event.findAll({
         where: { createdBy: decoded.id },
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
       });
       if (events.length === 0) {
         emptyErr(res);
@@ -111,7 +115,7 @@ async function changeById(req: Request, res: Response): Promise<void> {
         .status(200)
         .send(`Event with ID ${eventData.id} updated successfully.`);
     } else {
-      emptyErr(res);
+      //emptyErr(res);
     }
   } catch (err) {
     valErr(res);
@@ -153,6 +157,7 @@ async function getBetween(req: Request, res: Response): Promise<void> {
           [Op.between]: [startDate, endDate],
         },
       },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
     //console.log(events);
     if (events.length === 0) {

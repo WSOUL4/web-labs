@@ -2,7 +2,7 @@ export const handleLogout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('refreshToken');
 
-  window.location.reload();
+  //window.location.reload();
 };
 
 export const saveTokens = (token: string|undefined, refreshToken: string|undefined) => {

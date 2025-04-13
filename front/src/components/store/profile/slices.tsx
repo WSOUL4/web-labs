@@ -1,7 +1,10 @@
 // store/profileSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getProfile } from '../../api/profile';
+import { getProfile } from '../../../api/profile';
+import {  findMy } from '../../../api/eventService';
+import { refresh } from '../../../api/authService';
 
+//profile
 // Определите интерфейс для данных профиля
 interface ProfileData {
   name: string;
@@ -19,6 +22,8 @@ const initialState: ProfileState = {
   loading: false,
   error: null,
 };
+
+
 
 // Асинхронный thunk для получения профиля
 export const fetchProfile = createAsyncThunk<ProfileData>('profile/fetchProfile', async () => {
@@ -42,9 +47,19 @@ const profileSlice = createSlice({
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Что-то пошло не так.';
+        //state.error = action.error.message || 'Что-то пошло не так.';
+        if (action.error.message?.includes('401')) {
+          state.error =('Ошибка 401: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё 1 раз.');
+          refresh();
+        } else if (action.error.message?.includes('403')){
+          state.error =('Ошибка 403: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё 1 раз.');
+          refresh();
+        }
       });
   },
 });
+
+
+
 
 export default profileSlice.reducer;

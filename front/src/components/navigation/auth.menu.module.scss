@@ -39,6 +39,13 @@
   line-height: normal; // Сброс высоты строки
 }
 
+.nav_button {
+  // Добавляем общий стиль для навигационных ссылок и кнопок
+  
+border: 0px;
+padding: 0px;
+}
+
 .nav_link:hover,
 .nav_button:hover {
   background-color: #007bff; // Цвет фона при наведении
