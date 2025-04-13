@@ -15,7 +15,7 @@ const NavMenu: React.FC = () => {
           // Если токены есть, отображаем ссылки для выхода или других защищенных страниц
           <>
             <li className={styles.nav_item}>
-              <Link className={styles.nav_link} to="/404">
+              <Link className={styles.nav_link} to="/profile">
                 Profile
               </Link>
             </li>

@@ -122,4 +122,37 @@ async function refreshAccessToken(
   }
 }
 
-export { register, login, refreshAccessToken };
+async function getProfile(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const rt = getTokenFromHeaders(req);
+
+  try {
+    if (rt !== null) {
+      const dt = decodeToken(rt);
+
+      
+      const profileData = await User.findOne({
+        where: {
+          id: dt.id,
+          
+        },
+      });
+      if (!profileData) {
+        return res.status(403).send(`Token isn't valid.`);
+      }else{
+        res.status(200).send({ name: profileData.name, email: profileData.email });
+      }}}
+  catch (e) {
+      console.error('Error fetching a profile:', e);
+      res.status(403).send({ message: 'Token isnt walid.' });
+      }
+
+}
+
+
+
+
+export { register, login, refreshAccessToken, getProfile };
