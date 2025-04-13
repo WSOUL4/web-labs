@@ -1,60 +1,50 @@
-import React, {useEffect, useState} from 'react';
+// ProfilePage.tsx
+import React, { useEffect } from 'react';
 import NavBox from '../../components/navigation/nav.box';
-import { getProfile } from '../../api/profile';
+import { useAppDispatch, useSelectorMy } from '../../components/store/store'; // Импортируем типизированные хуки
+import { fetchProfile } from '../../components/store/slices'; // Импортируем thunk для получения профиля
+import { RootState } from '../../components/store/store'; // Импортируйте RootState для типизации
 import styles from '../../styles/general.module.scss';
 
 const ProfilePage: React.FC = () => {
-    const [errorMessage, setErrorMessage] = useState<string>('');
+    const dispatch = useAppDispatch(); // Используем типизированный dispatch
+    
+    // Используем типизированный селектор
+    const { data, loading, error } = useSelectorMy((state: RootState) => state.profile); // Получаем данные из состояния
+
     useEffect(() => {
-        // Функция для получения профиля
-        const fetchProfile = async () => {
-          
-            
-            getProfile()
-            .then((response) => {
-                console.log('Успешный запрос:', response);
-                
-              })
-            .catch((error) => {
-                      const errorCode = error.response?.status;
-                      const errorMessage = error.response?.data?.message || 'Что-то пошло не так.';
-            
-                      if (errorCode === 404) {
-                        setErrorMessage('Ошибка 404: Не найдено.');
-                      } else if (errorCode === 500) {
-                        setErrorMessage('Ошибка 500: Внутренняя ошибка сервера. Попробуйте позже.');
-                      } else if (errorCode === 401) {
-                        setErrorMessage('Ошибка 401: Вы не авторизованы, или ваш токен доступа прослочился.');
-                       
-                      } else {
-                        setErrorMessage(`Ошибка ${errorCode}: ${errorMessage}`);
-                      }
-                    });
-                };
-    
-        // Вызов функции получения профиля
-        fetchProfile();
-    
+        dispatch(fetchProfile()); // Вызов функции получения профиля при монтировании компонента
+
         // Настройка стилей при монтировании компонента
         document.body.style.placeItems = 'flex-start';
-        
+
         // Очистка стилей при размонтировании компонента
         return () => {
-          document.body.style.placeItems = '';
+            document.body.style.placeItems = '';
         };
-        
-      }, []); // Пустой массив зависимостей означает, что эффект выполнится только один раз при монтировании
-  return (
-    <div>
-      <NavBox />
-      <h1 className={styles.h1}>Профиль</h1>
-      {errorMessage && (
-        <div style={{ color: 'red', marginTop: '10px' }}>
-          {errorMessage}
+    }, [dispatch]);
+
+    return (
+        <div>
+            <NavBox />
+            <h1 className={styles.h1}>Профиль</h1>
+            {loading && <p>Загрузка...</p>}
+            {error && (
+                <div style={{ color: 'red', marginTop: '10px' }}>
+                    {error}
+                </div>
+            )}
+            {data && (
+                <div>
+                    {/* Здесь вы можете отобразить данные профиля */}
+                    <pre>{JSON.stringify(data, null, 2)}</pre>
+                    {/* Или отобразите конкретные поля */}
+                    <p>Имя: {data.name}</p>
+                    <p>Email: {data.email}</p>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default ProfilePage;
