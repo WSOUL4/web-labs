@@ -3,7 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getProfile } from '../../../api/profile';
 import {  findMy } from '../../../api/eventService';
 import { refresh } from '../../../api/authService';
-
+import { useNavigate } from 'react-router-dom';
+//const navigate = useNavigate();
 //profile
 // Определите интерфейс для данных профиля
 interface ProfileData {
@@ -52,9 +53,12 @@ const profileSlice = createSlice({
         if (action.error.message?.includes('401')) {
           state.error =('Ошибка 401: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё 1 раз.');
           refresh();
+          //navigate('/');
+
         } else if (action.error.message?.includes('403')){
           state.error =('Ошибка 403: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё 1 раз.');
           refresh();
+          //navigate('/');
         }
       });
   },

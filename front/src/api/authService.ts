@@ -30,6 +30,7 @@ export const registerUser = async (email: string, name: string, password: string
 
 export const refresh = async () => {
     try {
+        console.log('REFRESHING ACCESS TOKEN');
         const response = await axios.post(`${apiUrl}/auth/refresh`, {
             headers: getHeadersRefreshToken()
         });

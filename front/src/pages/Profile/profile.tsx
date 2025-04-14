@@ -13,7 +13,9 @@ import EventForm from './components/event.form';
 import AddForm from './components/add.form';
 import {changeEvent, addEvent, deleteEvent} from '../../api/eventService';
 import { refresh } from '../../api/authService';
+import { useNavigate } from 'react-router-dom';
 const ProfilePage: React.FC = () => {
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>('');
     const dispatch = useAppDispatch(); 
     

@@ -5,18 +5,19 @@ import {EventData} from '../pages/Events/components/eventsContext';
 export const findAll = async () => {
     try {
         const response = await axios.get(`${apiUrl}/events`,{ headers: getHeadersToken() });
-        return response.data; // Возвращаем данные ответа
+        //console.log(response.data);
+        return response.data;
     } catch (error) {
-        throw error; // Если ошибка, пробрасываем её дальше
+        throw error; 
     }
 };
 
 export const findMy = async () => {
     try {
         const response = await axios.get(`${apiUrl}/events/my`,{ headers: getHeadersToken() });
-        return response.data; // Возвращаем данные ответа
+        return response.data; 
     } catch (error) {
-        throw error; // Если ошибка, пробрасываем её дальше
+        throw error; 
     }
 };
 
@@ -27,9 +28,9 @@ export const findBetweenDates = async (sD: string, eD: string) => {
             'startDate':sD,
             'endDate':eD
         });
-        return response.data; // Возвращаем данные ответа
+        return response.data; 
     } catch (error) {
-        throw error; // Если ошибка, пробрасываем её дальше
+        throw error; 
     }
 };
 

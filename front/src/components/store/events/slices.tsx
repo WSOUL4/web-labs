@@ -34,6 +34,7 @@ export const fetchMyEvents = createAsyncThunk<EventData[]>('events/fetchMyEvents
 });
 export const fetchAllEvents = createAsyncThunk<EventData[]>('events/fetchAllEvents', async () => {
   const response = await findAll();
+  //console.log(response);
   return response;
 });
 export const fetchEventsBetweenDates = createAsyncThunk<EventData[], FetchEventsParams>(
@@ -58,6 +59,10 @@ const eventsSlice = createSlice({
         );
       }
     },
+    clearEvents(state) {
+      state.data = [];
+      state.error = null;
+    },
   },
   
   extraReducers: (builder) => {
@@ -79,11 +84,40 @@ const eventsSlice = createSlice({
           state.error = ('Ошибка 403: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё раз.');
           refresh();
         }
+      })
+
+
+
+
+      .addCase(fetchAllEvents.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllEvents.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchAllEvents.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Что-то пошло не так.';
+      })
+
+      .addCase(fetchEventsBetweenDates.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchEventsBetweenDates.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchEventsBetweenDates.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Что-то пошло не так.';
       });
   },
 });
 
 // Экспортируем новый action
-export const { updateEvents } = eventsSlice.actions;
+export const { updateEvents,clearEvents } = eventsSlice.actions;
 
 export default eventsSlice.reducer;
