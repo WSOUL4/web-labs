@@ -45,6 +45,10 @@ Event.init(
         key: 'id',
       },*/
     },
+    location: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
   },
   {
     sequelize: conn,

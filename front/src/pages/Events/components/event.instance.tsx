@@ -8,9 +8,10 @@ interface InstanceProps {
   description: string;
   date: string;
   createdBy: number;
+  location: string;
 }
 
-const Instance: React.FC<InstanceProps> = ({ id, title, description, date, createdBy }) => {
+const Instance: React.FC<InstanceProps> = ({ id, title, description, date, createdBy,location }) => {
   
   const formattedDate = new Date(date).toLocaleDateString();
 
@@ -21,6 +22,7 @@ const Instance: React.FC<InstanceProps> = ({ id, title, description, date, creat
       <p>Описание: {description}</p>
       <p>Дата проведения: {formattedDate}</p>
       <p>ID Автора: {createdBy}</p>
+      <p>Локация: {location}</p>
     </div>
   );
 };

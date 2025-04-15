@@ -95,7 +95,7 @@ const handleAddClick = () => {
         today.setHours(0, 0, 0, 0); 
         const todayString: string=today.toString();
     if (dataProfile){
-        const event:EventData={id:0 ,title:'', description:'', date:todayString, createdBy:dataProfile.id};
+        const event:EventData={id:0 ,title:'', description:'', date:todayString, createdBy:dataProfile.id,location:''};
         setSelectedEvent(event);
         setIsAddFormOpen(true);
     }
@@ -109,6 +109,7 @@ const closeAddForm = () => {
 
 };
 const addNew= (newEvent: EventData) => {
+   
     if( dataProfile){
         addEvent({
             id:0,
@@ -116,6 +117,7 @@ const addNew= (newEvent: EventData) => {
             description:newEvent.description,
             date:newEvent.date,
             createdBy:dataProfile.id,
+            location:newEvent.location
         })
         .then((response) => {
             console.log('Успешный запрос:', response);
@@ -201,13 +203,16 @@ const delEvent=(updatedEvent: EventData)=>{
 
             {dataEvents && (
                 <div className={stylesEventContainer.containerStyle}>
-                {dataEvents.map((event: EventData) => ( // Используем тип EventData
+                {dataEvents.map((event: EventData) => (
+
                     <div key={event.id} className={stylesEvent.instance} onClick={() => handleEventClick(event)}>
-                        <h3>{event.title}</h3> {/* Заголовок события */}
-                        <p>{event.description}</p> {/* Описание события */}
-                        <p>Дата события: {event.date}</p> {/* Дата события */}
-                        <p>Создано пользователем ID: {event.createdBy}</p> {/* ID создателя */}
+                        <h3>{event.title}</h3> 
+                        <p>{event.description}</p> 
+                        <p>Дата события: {event.date}</p> 
+                        <p>Создано пользователем ID: {event.createdBy}</p> 
+                        <p>Локация: {event.location}</p> 
                     </div>
+
                     ))}
                 </div>)}
             {/* Условный рендеринг формы */}

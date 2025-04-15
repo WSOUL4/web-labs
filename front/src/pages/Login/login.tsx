@@ -5,12 +5,13 @@ import {isLoggedIn} from '../../utils/localStorage';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/general.module.scss';
 import stylesMy from './login.module.scss';
+import { useAppDispatch, useSelectorMy } from '../../components/store/store'; 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-
+  const {isAuthenticated}=useSelectorMy((state)=>state.auth)
     useEffect(() => {
     // Проверяем, залогинен ли пользователь
-    if (isLoggedIn()) {
+    if (isAuthenticated) {
       // Если да, перенаправляем на страницу событий
       navigate('/events');
     }

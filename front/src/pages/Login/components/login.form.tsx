@@ -1,63 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../../api/authService';
+import { useAppDispatch, useSelectorMy } from '../../../components/store/store'; // Импортируем типизированные хуки
+import { loginUser } from '../../../components/store/auth.slice'; // Импортируем thunk для входа
 import styles from './login.form.module.scss'; // Импортируем стили
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [redirectCountdown, setRedirectCountdown] = useState<number>(5);
-  //const [button, setButtonState]= useState<boolean>(true);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  // Получаем состояние из Redux
+  const { isLoading, isAuthenticated, errorMessage } = useSelectorMy((state) => state.auth);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setLoading(true);
-    login(email, password)
-      .then((response) => {
-          setSuccessMessage(
-              'Вы успешно вошли в систему!'
-          );
-          startRedirectCountdown();
-      })
-      .catch((error) => {
-          setError(
-              error.response
-                  ? error.response.data.message
-                  : 'Произошла ошибка при входе'
-          );
-      })
-      .finally(() => {
-          setLoading(false);
-      });
+    dispatch(loginUser({ email, password }));
   };
 
-  const startRedirectCountdown = () => {
-      let countdown = 0;
-      setRedirectCountdown(countdown);
-      const timer = setInterval(() => {
-          countdown -= 1;
-          setRedirectCountdown(countdown);
-          if (countdown <= 0) {
-              clearInterval(timer);
-              navigate('/events'); // Перенаправление на страницу событий
-          }
-      }, 1000);
-  };
+  // Эффект для перенаправления после успешного входа
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/events'); // Перенаправление на страницу событий
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <h2>Вход</h2>
-        {error && <p className={styles.error}>{error}</p>}
-        {successMessage && <p className={styles.success}>{successMessage}</p>}
-        {successMessage && (
-          <p>Перенаправление через {redirectCountdown} секунд(ы)...</p>
-        )}
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email:</label>
           <input
@@ -78,8 +50,8 @@ const LoginForm: React.FC = () => {
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Загрузка...' : 'Войти'}
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Загрузка...' : 'Войти'}
         </button>
       </form>
     </div>

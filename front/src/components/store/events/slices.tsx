@@ -13,6 +13,7 @@ interface EventData {
   description: string;
   date: string;
   createdBy: number;
+  location: string;
 }
 interface EventsState {
   data: EventData[] | null; // Теперь это будет либо объект с данными профиля, либо null

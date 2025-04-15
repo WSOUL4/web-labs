@@ -11,6 +11,7 @@ import ProfilePage from './pages/Profile/profile';
 import RegisterPage from './pages/Register/register';
 import NotFoundPage from './pages/404/404';
 import { EventsProvider } from './pages/Events/components/eventsContext';
+import {ProtectedRoute} from './components/protected.route';
 /*
 function App() {
   const [count, setCount] = useState(0)
@@ -30,7 +31,9 @@ const App: React.FC = () => {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/events" element={<EventPage />} />
+        <Route element={<ProtectedRoute />}>
         <Route path="/profile" element={<ProfilePage />} />
+        </Route>
         {/* Соответствие для всех остальных маршрутов */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
