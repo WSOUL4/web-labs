@@ -7,7 +7,7 @@ export interface EventData {
   description: string; 
   date: string;
   createdBy: number;
-  location:string|null;
+  location:string;
 }
 export interface EventDataAdd {
   title: string;

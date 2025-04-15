@@ -67,11 +67,13 @@ async function getByMy(req: Request, res: Response): Promise<void> {
 // ● Создание мероприятия (POST /events)
 function add(req: Request, res: Response) {
   //const eventData = req.body;
+    //console.log(req.body);
   const eventData: EventAttributes = {
     title: req.body.title,
     description: req.body.description,
     date: req.body.date,
     createdBy: req.body.createdBy,
+    location: req.body.location,
   };
   console.log(eventData);
 
@@ -81,7 +83,7 @@ function add(req: Request, res: Response) {
     })
     .catch((err) => {
       console.error('Error adding an event:', err);
-      valErr(res);
+      //valErr(res);
     });
 }
 
@@ -93,6 +95,7 @@ async function changeById(req: Request, res: Response): Promise<void> {
     description: req.body.description,
     date: req.body.date,
     createdBy: req.body.createdBy,
+    location: req.body.location,
   };
 
   try {
@@ -102,6 +105,7 @@ async function changeById(req: Request, res: Response): Promise<void> {
         description: eventData.description,
         date: eventData.date,
         createdBy: eventData.createdBy,
+        location: eventData.location,
       },
       {
         where: {

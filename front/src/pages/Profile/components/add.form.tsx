@@ -13,6 +13,7 @@ const EventAddForm: React.FC<EventFormProps> = ({ event, onClose, onAdd }) => {
     const [title, setTitle] = useState(event.title);
     const [description, setDescription] = useState(event.description);
     const [date, setDate] = useState(event.date);
+    const [location, setLocation] = useState(event.location);
     const [errorMessage, setErrorMessage] = useState<string | null>(null); // Состояние для сообщения об ошибке
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -38,7 +39,7 @@ const EventAddForm: React.FC<EventFormProps> = ({ event, onClose, onAdd }) => {
             setErrorMessage('Пустое название.');
             return;
         }
-        const newEvent = { ...event, title, description, date };
+        const newEvent = { ...event, title, description, date, location };
         //console.log('LEN:',title.length);
         onAdd(newEvent);
         onClose();
@@ -70,7 +71,11 @@ const EventAddForm: React.FC<EventFormProps> = ({ event, onClose, onAdd }) => {
                 </label>
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                 
+                <label>
+                    Локация:
+                </label>
                 
+                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
 
                 <button type="button" onClick={handleAdd}>Добавить</button>
                 <button type="button" onClick={onClose}>Закрыть</button>

@@ -14,6 +14,7 @@ const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onD
     const [title, setTitle] = useState(event.title);
     const [description, setDescription] = useState(event.description);
     const [date, setDate] = useState(event.date);
+    const [location, setLocation] = useState(event.location);
     const [errorMessage, setErrorMessage] = useState<string | null>(null); // Состояние для сообщения об ошибке
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,12 +36,12 @@ const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onD
             setErrorMessage('Длина текста должна быть не больше 255 символов.');
             return;
         }
-        const updatedEvent = { ...event, title, description, date };
+        const updatedEvent = { ...event, title, description, date, location };
         onSaveChange(updatedEvent);
         onClose();
     };
     const handleDelete=()=>{
-        const updatedEvent = { ...event, title, description, date };
+        const updatedEvent = { ...event, title, description, date, location };
         onDelete(updatedEvent);
         onClose();
     }
@@ -71,7 +72,11 @@ const EventForm: React.FC<EventFormProps> = ({ event, onClose, onSaveChange, onD
                 </label>
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                 
+                <label>
+                    Локация:
+                </label>
                 
+                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
 
                 <button type="button" onClick={handleSave}>Сохранить</button>
                 <button type="button" onClick={onClose}>Закрыть</button>

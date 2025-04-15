@@ -45,6 +45,7 @@ export const changeEvent = async (event: EventData) => {
             description: event.description,
             date: event.date,
             createdBy: event.createdBy,
+            location:event.location,
             id:event.id,
         }, {
             headers: headers
@@ -66,6 +67,7 @@ export const addEvent = async (event: EventData) => {
             description: event.description,
             date: event.date,
             createdBy: event.createdBy,
+            location:event.location,
         }, {
             headers: headers
         });

@@ -58,6 +58,7 @@ const saveChange = (updatedEvent: EventData) => {
 if (dataEvents) {
     const updatedEvents = dataEvents.map(event => {
         if (event.id === updatedEvent.id) {
+            //console.log(updatedEvent);
             changeEvent(updatedEvent)
         .then((response) => {
             console.log('Успешный запрос:', response);
@@ -109,7 +110,7 @@ const closeAddForm = () => {
 
 };
 const addNew= (newEvent: EventData) => {
-   
+   console.log(newEvent);
     if( dataProfile){
         addEvent({
             id:0,
@@ -117,7 +118,7 @@ const addNew= (newEvent: EventData) => {
             description:newEvent.description,
             date:newEvent.date,
             createdBy:dataProfile.id,
-            location:newEvent.location
+            location:newEvent.location,
         })
         .then((response) => {
             console.log('Успешный запрос:', response);
