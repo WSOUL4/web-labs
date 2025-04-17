@@ -15,6 +15,7 @@
   "type": "module",
   "dependencies": {
     "@eslint/js": "^9.23.0",
+    "@react-google-maps/api": "^2.20.6",
     "@reduxjs/toolkit": "^2.6.1",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
