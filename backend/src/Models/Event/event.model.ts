@@ -8,6 +8,7 @@ export interface EventAttributes {
   description: string;
   date: string; // Или Date, если вы хотите использовать Date
   createdBy: number; // Внешний ключ
+  location: string;
 }
 
 export class Event extends Model<EventAttributes> implements EventAttributes {
@@ -16,6 +17,7 @@ export class Event extends Model<EventAttributes> implements EventAttributes {
   public description!: string;
   public date!: string; // Или Date
   public createdBy!: number; // Внешний ключ
+  public location!: string; // Или Date
 }
 
 Event.init(

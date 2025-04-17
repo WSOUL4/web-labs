@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import { User, UserAttributes } from '../Models/User/user.model';
 import { valErr, emptyErr } from '../CustomErrors/errors';
-
+interface UserAttributesC {
+  id: number; // Поле id
+  name?: string;
+  surname?: string;
+  fname?: string;
+  gender?: string;
+  birthday?: string;
+}
 // ● Получение списка пользователей (GET /users)
 function getAll(req: Request, res: Response): void {
   User.findAll({
@@ -28,6 +35,10 @@ function add(req: Request, res: Response): void {
     //let p = req.body;
     const user: UserAttributes = {
       name: req.body.name,
+      surname: req.body.surname,
+      fname: req.body.fname,
+      gender: req.body.gender,
+      birthday: req.body.birthday,
       email: req.body.email,
       password: req.body.password,
     };
@@ -45,5 +56,51 @@ function add(req: Request, res: Response): void {
     res.status(500).send(`Internal server error`);
   }
 }
+
+
+export async function changeById(req: Request, res: Response): Promise<void> {
+  const userData: UserAttributesC = {
+      id:req.body.id,
+      name: req.body.name,
+      surname: req.body.surname,
+      fname: req.body.fname,
+      gender: req.body.gender,
+      birthday: req.body.birthday,
+      
+  };
+
+  try {
+    const [rowsUpdated] = await User.update(
+      {
+        name:req.body.name,
+        surname:req.body.surname,
+        fname:req.body.fname,
+        gender:req.body.gender,
+        birthday:req.body.birthday,
+      },
+      {
+        where: {
+          id: userData.id,
+        },
+      },
+    );
+
+    if (rowsUpdated > 0) {
+      res
+        .status(200)
+        .send(`User with ID ${userData.id} updated successfully.`);
+    } else {
+      //emptyErr(res);
+    }
+  } catch (err) {
+    valErr(res);
+    console.log(err);
+  }
+}
+
+
+
+
+
 
 export { getAll, add };

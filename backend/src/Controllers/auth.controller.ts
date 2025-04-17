@@ -16,22 +16,27 @@ async function register(req: Request, res: Response, next: NextFunction) {
     //const { name, email, password } = req.body;
     type UserCredentials = {
       name?: string;
+      surname?: string,
+      fname?: string,
+      gender?: string,
+      birthday?: string,
       email: string;
       password: string;
+        
     };
     const user: UserCredentials = {
       name: req.body.name,
+      surname: req.body.surname,
+      fname: req.body.fname,
+      gender: req.body.gender,
+      birthday: req.body.birthday,
       email: req.body.email,
       password: req.body.password,
     };
     // Hash the password before saving
     //const hashedPassword = await bcrypt.hash(user.password, 10);
 
-    await User.create({
-      name: user.name,
-      email: user.email,
-      password: user.password,
-    });
+    await User.create(user);
 
     res.status(201).send('Registered new user.');
   } catch (error) {
@@ -143,7 +148,7 @@ async function getProfile(
       if (!profileData) {
         return res.status(403).send(`Token isn't valid.`);
       }else{
-        res.status(200).send({ name: profileData.name, email: profileData.email, id:profileData.id });
+        res.status(200).send({ name: profileData.name, surname: profileData.surname, fname: profileData.fname, gender: profileData.gender, birthday: profileData.birthday, email: profileData.email, id:profileData.id });
       }}}
   catch (e) {
       console.error('Error fetching a profile:', e);

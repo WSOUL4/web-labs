@@ -6,6 +6,11 @@ import styles from './register.form.module.scss';
 const RegisterForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [fname, setFname] = useState('');
+  const [gender, setGender] = useState('');
+  const [birthday, setBirthday] = useState('');
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -21,11 +26,18 @@ const RegisterForm: React.FC = () => {
       setError('Пароли не совпадают');
       return;
     }
+    const selectedDate = new Date(birthday);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Убираем время из текущей даты
 
+    if (selectedDate > today) {
+      setError('Дата не может быть позже сегодняшнего дня.');
+        return;
+    }
     setError(null);
     setLoading(true);
 
-    registerUser(email, name, password)
+    registerUser(email, name, surname, fname, gender, birthday, password)
       .then((response) => {
         console.log('Регистрация успешна:', response);
         setSuccessMessage(
@@ -85,6 +97,46 @@ const RegisterForm: React.FC = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="surname">Фамилия:</label>
+          <input
+            type="text"
+            id="surname"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="fname">Отчество:</label>
+          <input
+            type="text"
+            id="fname"
+            value={fname}
+            onChange={(e) => setFname(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="gender">Пол:</label>
+          <input
+            type="text"
+            id="gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="birthday">День рождения:</label>
+          <input
+            type="date"
+            id="birthday"
+            value={birthday}
+            onChange={(e) => setBirthday(e.target.value)}
+          />
+        </div>
+
+
+
         <div className={styles.inputGroup}>
           <label htmlFor="password">Пароль:</label>
           <input

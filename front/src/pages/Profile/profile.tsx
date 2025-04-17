@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import NavBox from '../../components/navigation/nav.box';
 import { useAppDispatch, useSelectorMy,RootState } from '../../components/store/store'; 
-import { fetchProfile } from '../../components/store/profile/slices'; 
+import { fetchProfile, changeProfile, ProfileData,setDataProfile } from '../../components/store/profile/slices'; //
 import { fetchMyEvents, updateEvents } from '../../components/store/events/slices';
 import styles from '../../styles/general.module.scss';
 import stylesProfile from './profile.module.scss';
@@ -22,7 +22,8 @@ const ProfilePage: React.FC = () => {
     // Используем типизированный селектор
     const { data: dataProfile, loading: loadingProfile, error: errorProfile } = useSelectorMy((state: RootState) => state.profile); 
     const { data: dataEvents, loading: loadingEvents, error: errorEvents } = useSelectorMy((state: RootState) => state.events);
-
+    const [editMode, setEditMode] = useState<{[key: string]: boolean}>({});
+    const [formValues, setFormValues] = useState<Partial<ProfileData>>({});
     // Состояние для управления формой
     const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -39,7 +40,44 @@ const ProfilePage: React.FC = () => {
         };
     }, [dispatch]);
 //<pre>{JSON.stringify(dataProfile, null, 2)}</pre>
-//
+    useEffect(() => {
+    setFormValues({
+      name: dataProfile?.name,
+      surname: dataProfile?.surname,
+      fname: dataProfile?.fname,
+      gender: dataProfile?.gender,
+      birthday: dataProfile?.birthday,
+    });
+  }, [dataProfile]);
+  const startEdit = (field: keyof ProfileData) => {
+    setEditMode(prev => ({ ...prev, [field]: true }));
+  };
+
+  const cancelEdit = (field: keyof ProfileData) => {
+    if(dataProfile){
+        setFormValues(prev => ({ ...prev, [field]: dataProfile[field] }));
+        setEditMode(prev => ({ ...prev, [field]: false }));
+    }
+    
+  };
+
+  const saveField = async (field: keyof ProfileData) => {
+    try {
+      if (!dataProfile?.id) {
+        throw new Error('ID профиля отсутствует');
+      }
+      // Отправляем всю форму + id
+      await dispatch(changeProfile({ id: dataProfile.id, ...formValues })).unwrap();
+      setEditMode(prev => ({ ...prev, [field]: false }));
+      dispatch(setDataProfile({ id: dataProfile.id, ...formValues })); 
+    } catch (error) {
+      console.error('Ошибка при сохранении', error);
+    }
+  };
+
+  const onChangeField = (field: keyof ProfileData, value: string) => {
+    setFormValues(prev => ({ ...prev, [field]: value }));
+  };
 // Функция для открытия формы
 const handleEventClick = (event: EventData) => {
     setSelectedEvent(event);
@@ -189,8 +227,105 @@ const delEvent=(updatedEvent: EventData)=>{
             {dataProfile && (
                 <>
                 <div className={stylesProfile.profileContainer}>
-                    <h2 className={stylesProfile.profileHeader}>Имя: </h2>
-                    <p className={stylesProfile.profileText}>{dataProfile.name}</p>
+                    
+                <h2>Имя:</h2>
+      {editMode.name ? (
+        <>
+          <input 
+            type="text" 
+            value={formValues.name || ''} 
+            onChange={e => onChangeField('name', e.target.value)} 
+          />
+          <button onClick={() => saveField('name')}>Сохранить</button>
+          <button onClick={() => cancelEdit('name')}>Отмена</button>
+        </>
+      ) : (
+        <>
+          <p>{dataProfile.name}</p>
+          <button onClick={() => startEdit('name')}>Изменить</button>
+        </>
+      )}
+
+      <h2>Фамилия:</h2>
+      {editMode.surname ? (
+        <>
+          <input 
+            type="text" 
+            value={formValues.surname || ''} 
+            onChange={e => onChangeField('surname', e.target.value)} 
+          />
+          <button onClick={() => saveField('surname')}>Сохранить</button>
+          <button onClick={() => cancelEdit('surname')}>Отмена</button>
+        </>
+      ) : (
+        <>
+          <p>{dataProfile.surname}</p>
+          <button onClick={() => startEdit('surname')}>Изменить</button>
+        </>
+      )}
+
+      {/* Аналогично для fname */}
+      
+      <h2>Отчество:</h2>
+      {editMode.fname ? (
+        <>
+          <input 
+            type="text" 
+            value={formValues.fname || ''} 
+            onChange={e => onChangeField('fname', e.target.value)} 
+          />
+          <button onClick={() => saveField('fname')}>Сохранить</button>
+          <button onClick={() => cancelEdit('fname')}>Отмена</button>
+        </>
+      ) : (
+        <>
+          <p>{dataProfile.fname}</p>
+          <button onClick={() => startEdit('fname')}>Изменить</button>
+        </>
+      )}
+
+      {/* Пол */}
+      
+      <h2>Пол:</h2>
+      {editMode.gender ? (
+        <>
+          {/* Можно сделать select */}
+          <select value={formValues.gender || ''} onChange={e=>onChangeField('gender', e.target.value)}>
+            <option value="">Выберите пол</option>
+            <option value="Мужской">Мужской</option>
+            <option value="Женский">Женский</option>
+            {/* Другие варианты */}
+          </select>
+          <button onClick={() => saveField('gender')}>Сохранить</button>
+          <button onClick={() => cancelEdit('gender')}>Отмена</button>
+        </>
+      ) : (
+        <>
+          <p>{dataProfile.gender}</p>
+          <button onClick={() => startEdit('gender')}>Изменить</button>
+        </>
+      )}
+
+       {/* День рождения */}
+
+       <h2>День рождения:</h2>
+       {editMode.birthday ? (
+         <>
+           {/* input type date */}
+           <input 
+             type="date" 
+             value={formValues.birthday || ''} 
+             onChange={e=>onChangeField('birthday', e.target.value)} 
+           />
+           <button onClick={() => saveField('birthday')}>Сохранить</button>
+           <button onClick={() => cancelEdit('birthday')}>Отмена</button>
+         </>
+       ) : (
+         <>
+           <p>{dataProfile.birthday}</p>
+           <button onClick={() => startEdit('birthday')}>Изменить</button>
+         </>
+       )}
                     <h2 className={stylesProfile.profileHeader}>Email: </h2>
                     <p className={stylesProfile.profileText}>{dataProfile.email}</p>
                     <h2 className={stylesProfile.profileHeader}>Ваш ID: </h2>

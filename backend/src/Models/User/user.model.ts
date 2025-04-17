@@ -7,6 +7,10 @@ import bcrypt from 'bcryptjs';
 export interface UserAttributes {
   id?: number; // Поле id
   name?: string;
+  surname?: string;
+  fname?: string;
+  gender?: string;
+  birthday?: string;
   email: string;
   password: string;
 }
@@ -14,10 +18,14 @@ export interface UserAttributes {
 export class User extends Model<UserAttributes> implements UserAttributes {
   public id!: number; // Определяем поле id
   public name!: string;
+  public surname!: string;
+  public fname!: string;
+  public gender!: string;
+  public birthday!: string;
   public email!: string;
   public password!: string;
 
-  // Опционально, можете добавить дополнительные методы класса, если нужно
+
 }
 
 User.init(
@@ -28,6 +36,22 @@ User.init(
       primaryKey: true, // Указание, что это первичный ключ
     },
     name: {
+      type: DataTypes.STRING,
+      allowNull: true, // Можно сделать поле обязательным
+    },
+    surname: {
+      type: DataTypes.STRING,
+      allowNull: true, // Можно сделать поле обязательным
+    },
+    fname: {
+      type: DataTypes.STRING,
+      allowNull: true, // Можно сделать поле обязательным
+    },
+    birthday: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    gender: {
       type: DataTypes.STRING,
       allowNull: true, // Можно сделать поле обязательным
     },
