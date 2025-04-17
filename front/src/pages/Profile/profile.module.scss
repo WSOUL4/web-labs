@@ -1,0 +1,38 @@
+.profileContainer {
+    
+    display: flex;
+    margin: auto;
+    flex-direction: column; // Устанавливаем направление по вертикали
+    // Выравниваем элементы по левому краю
+    text-align: justify;
+    margin-top: 10px; // Добавляем отступ сверху, если нужно
+    border-radius: 0px;
+    width: 50vw;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+        h2{
+            align-self: center;
+        }
+        p{
+            //align-self: flex-start; 
+            //padding-left: 5%;
+            align-self: center;
+            font-size: large;
+        }
+}
+.profileHeader{
+    
+}
+.profileText{
+    
+    color: #ffffff;
+}
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); // Полупрозрачный черный цвет
+    z-index: 999; // Убедитесь, что фон находится под формой
+}

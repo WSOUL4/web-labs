@@ -1,0 +1,59 @@
+
+.container {
+    margin: 20px; // Устанавливает внешний отступ для контейнера
+  }
+  
+  .label {
+    display: block; // Устанавливает label как блочный элемент
+    margin-bottom: 16px; // Отступ снизу для разделения с элементами
+  }
+  
+  .select {
+    //white-space: ;
+    color: #ffffff;
+    margin-bottom: 16px; // Отступ снизу между select и следующими элементами
+    margin-right: 16px;
+    background-color: #1a1a1a;
+    padding: 10px;
+    
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    text-align: center;
+    font-size: 1em;
+    
+    &:focus {
+        background-color: #007bff; // Цвет фона при наведении
+        color: white; // Цвет текста при наведении
+        border: 2px solid #ffffff;
+        outline: none; // Убираем стандартный контур
+      }
+  }
+  
+  .input {
+    
+    margin-bottom: 16px; // Отступ снизу между input и следующими элементами
+    //background-color: #1a1a1a;
+    text-align: center;
+  }
+  
+  .button {
+    margin-bottom: 16px;
+    padding-block: 0px;
+    padding-inline: 0px;
+    padding: 10px;
+    //margin-top: 10px; // Отступ сверху для кнопки
+    background-color: #1a1a1a;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 0px;
+    &:hover {
+        background-color: #007bff; // Цвет фона при наведении
+        color: white; // Цвет текста при наведении
+        border: 2px solid #ffffff;
+      }
+  }
+option {
+    text-align: center;
+    
+    
+}

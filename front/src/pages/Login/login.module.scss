@@ -1,0 +1,16 @@
+.link {
+    background-color: #1a1a1a;
+    text-decoration: none; // Убираем подчеркивание
+    color: #d8d8d8; // Цвет текста для ссылок
+    padding: 10px; // Отступ вокруг текста
+    margin: 5px 0; // Отступ сверху и снизу между ссылками
+    border: 1px solid #ccc; // Рамка для ссылок
+    border-radius: 0px; // Закругленные углы для ссылок
+    transition: background-color 0.3s, color 0.3s; // Плавный переход для изменений
+    margin: 10px;
+  
+    &:hover {
+      background-color: #007bff; // Цвет фона при наведении
+      color: white; // Цвет текста при наведении
+    }
+  }

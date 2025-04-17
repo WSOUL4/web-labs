@@ -1,0 +1,53 @@
+.nav_menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000000;
+  padding: 10px;
+  height: 60px; // Устанавливаем фиксированную высоту
+  width: fit-content;
+}
+
+.nav_list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav_item {
+  margin: 0 15px; // Отступы между кнопками
+}
+
+.nav_link,
+.nav_button {
+  // Добавляем общий стиль для навигационных ссылок и кнопок
+  
+  padding: 10px 15px; // Отступы для кнопок и ссылок
+  background-color: #1a1a1a;
+  text-decoration: none; // Убираем подчеркивание для ссылок
+  color: #ffffff; // Цвет текста
+  border: 1px solid #ccc; // Рамка для кнопок и ссылок
+  border-radius: 0px; // Закругленные углы
+  transition:
+    background-color 0.3s,
+    color 0.3s; // Плавный переход цвета
+  display: flex; // Убедимся, что оба элемента являются flex-контейнерами
+  align-items: center; // Центруем текст по вертикали
+  line-height: normal; // Сброс высоты строки
+}
+
+.nav_button {
+  // Добавляем общий стиль для навигационных ссылок и кнопок
+  
+border: 0px;
+padding: 0px;
+}
+
+.nav_link:hover,
+.nav_button:hover {
+  background-color: #007bff; // Цвет фона при наведении
+  color: white; // Цвет текста при наведении
+}
