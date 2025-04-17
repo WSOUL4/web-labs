@@ -257,7 +257,7 @@ const delEvent=(updatedEvent: EventData)=>{
                 <div className={stylesProfile.profileContainer}>
                     
                 <h2>Имя:</h2>
-                <h2>Имя:</h2>
+
             {editMode.name ? (
             <>
                 <input 

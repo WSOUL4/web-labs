@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import {registerUser} from '../../../api/authService';
+import {registerUser,dataRegister} from '../../../api/authService';
 import styles from './register.form.module.scss';
+//Partial<dataRegister>
 const RegisterForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -26,6 +27,10 @@ const RegisterForm: React.FC = () => {
       setError('Пароли не совпадают');
       return;
     }
+    if (!name) {
+      setError('Имя не установлено');
+      return;
+    }
     const selectedDate = new Date(birthday);
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Убираем время из текущей даты
@@ -36,8 +41,19 @@ const RegisterForm: React.FC = () => {
     }
     setError(null);
     setLoading(true);
+    const userData:Partial<dataRegister> = {
+      email: email,
+      password:password,
+      name: name,
+    };
+  
 
-    registerUser(email, name, surname, fname, gender, birthday, password)
+    if (surname.trim() !== '') userData.surname = surname;
+    if (fname.trim() !== '') userData.fname = fname;
+    if (gender.trim() !== '') userData.gender = gender;
+    if (birthday.trim() !== '') userData.birthday = birthday;
+  
+    registerUser(userData)
       .then((response) => {
         console.log('Регистрация успешна:', response);
         setSuccessMessage(
