@@ -28,6 +28,24 @@ const ProfilePage: React.FC = () => {
     const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+    const [errors, setErrors] = useState<Partial<Record<keyof ProfileData, string>>>({});
+    const validateField = (field: keyof ProfileData, value: string): string => {
+        switch (field) {
+          case 'name':
+          case 'surname':
+          case 'fname':
+            if (!value.trim()) return 'Поле не может быть пустым';
+            return '';
+          case 'gender':
+            if (value && !['Мужской', 'Женский'].includes(value)) return 'Некорректное значение пола';
+            return '';
+          case 'birthday':
+            if (value && isNaN(Date.parse(value))) return 'Некорректная дата';
+            return '';
+          default:
+            return '';
+        }
+      };
     useEffect(() => {
         dispatch(fetchProfile()); 
         dispatch(fetchMyEvents());
@@ -66,6 +84,13 @@ const ProfilePage: React.FC = () => {
       if (!dataProfile?.id) {
         throw new Error('ID профиля отсутствует');
       }
+      
+      const errorMsg = validateField(field, String(formValues[field] ?? ''));
+    if (errorMsg) {
+        setErrors(prev => ({ ...prev, [field]: errorMsg }));
+        return; // Не сохраняем если ошибка
+    
+}
       // Отправляем всю форму + id
       await dispatch(changeProfile({ id: dataProfile.id, ...formValues })).unwrap();
       setEditMode(prev => ({ ...prev, [field]: false }));
@@ -77,6 +102,9 @@ const ProfilePage: React.FC = () => {
 
   const onChangeField = (field: keyof ProfileData, value: string) => {
     setFormValues(prev => ({ ...prev, [field]: value }));
+  
+    const errorMsg = validateField(field, value);
+    setErrors(prev => ({ ...prev, [field]: errorMsg }));
   };
 // Функция для открытия формы
 const handleEventClick = (event: EventData) => {
@@ -229,22 +257,24 @@ const delEvent=(updatedEvent: EventData)=>{
                 <div className={stylesProfile.profileContainer}>
                     
                 <h2>Имя:</h2>
-      {editMode.name ? (
-        <>
-          <input 
-            type="text" 
-            value={formValues.name || ''} 
-            onChange={e => onChangeField('name', e.target.value)} 
-          />
-          <button onClick={() => saveField('name')}>Сохранить</button>
-          <button onClick={() => cancelEdit('name')}>Отмена</button>
-        </>
-      ) : (
-        <>
-          <p>{dataProfile.name}</p>
-          <button onClick={() => startEdit('name')}>Изменить</button>
-        </>
-      )}
+                <h2>Имя:</h2>
+            {editMode.name ? (
+            <>
+                <input 
+                type="text" 
+                value={formValues.name || ''} 
+                onChange={e => onChangeField('name', e.target.value)} 
+                />
+                {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
+                <button onClick={() => saveField('name')}>Сохранить</button>
+                <button onClick={() => cancelEdit('name')}>Отмена</button>
+            </>
+            ) : (
+            <>
+                <p>{dataProfile.name}</p>
+                <button onClick={() => startEdit('name')}>Изменить</button>
+            </>
+            )}
 
       <h2>Фамилия:</h2>
       {editMode.surname ? (
@@ -254,6 +284,7 @@ const delEvent=(updatedEvent: EventData)=>{
             value={formValues.surname || ''} 
             onChange={e => onChangeField('surname', e.target.value)} 
           />
+          {errors.surname && <div style={{ color: 'red' }}>{errors.surname}</div>}
           <button onClick={() => saveField('surname')}>Сохранить</button>
           <button onClick={() => cancelEdit('surname')}>Отмена</button>
         </>
@@ -274,6 +305,7 @@ const delEvent=(updatedEvent: EventData)=>{
             value={formValues.fname || ''} 
             onChange={e => onChangeField('fname', e.target.value)} 
           />
+          {errors.fname && <div style={{ color: 'red' }}>{errors.fname}</div>}
           <button onClick={() => saveField('fname')}>Сохранить</button>
           <button onClick={() => cancelEdit('fname')}>Отмена</button>
         </>
@@ -296,6 +328,7 @@ const delEvent=(updatedEvent: EventData)=>{
             <option value="Женский">Женский</option>
             {/* Другие варианты */}
           </select>
+          {errors.gender && <div style={{ color: 'red' }}>{errors.gender}</div>}
           <button onClick={() => saveField('gender')}>Сохранить</button>
           <button onClick={() => cancelEdit('gender')}>Отмена</button>
         </>
@@ -317,6 +350,7 @@ const delEvent=(updatedEvent: EventData)=>{
              value={formValues.birthday || ''} 
              onChange={e=>onChangeField('birthday', e.target.value)} 
            />
+           {errors.birthday && <div style={{ color: 'red' }}>{errors.birthday}</div>}
            <button onClick={() => saveField('birthday')}>Сохранить</button>
            <button onClick={() => cancelEdit('birthday')}>Отмена</button>
          </>
