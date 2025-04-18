@@ -8,6 +8,7 @@ type FilterOption = 'My' | 'Dates' | 'All';
 
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch(); 
+  
     const { data: dataEvents, loading: loadingEvents, error: errorEvents } = useSelectorMy((state: RootState) => state.events);
 const { data: dataProfile, loading: loadingProfile, error: errorProfile } = useSelectorMy((state: RootState) => state.profile); 
  

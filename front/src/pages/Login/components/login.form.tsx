@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useSelectorMy } from '../../../components/store/store'; // Импортируем типизированные хуки
 import { loginUser } from '../../../components/store/auth.slice'; // Импортируем thunk для входа
 import styles from './login.form.module.scss'; // Импортируем стили
+import { useAppDispatch, useSelectorMy,RootState } from '../../../components/store/store'; 
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -11,8 +11,8 @@ const LoginForm: React.FC = () => {
   const navigate = useNavigate();
 
   // Получаем состояние из Redux
-  const { isLoading, isAuthenticated, errorMessage } = useSelectorMy((state) => state.auth);
-
+  const {  isLoading, isAuthenticated, errorMessage } = useSelectorMy((state) => state.auth);
+  const { data: dataProfile, loading: loadingProfile, error: errorProfile } = useSelectorMy((state: RootState) => state.profile); 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
@@ -21,6 +21,7 @@ const LoginForm: React.FC = () => {
   // Эффект для перенаправления после успешного входа
   useEffect(() => {
     if (isAuthenticated) {
+      console.log(dataProfile);
       navigate('/events'); // Перенаправление на страницу событий
     }
   }, [isAuthenticated, navigate]);

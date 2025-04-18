@@ -15,7 +15,7 @@ import stylesProfile from '../Profile/profile.module.scss';
 const EventPage: React.FC = () => {
   const dispatch = useAppDispatch(); 
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const dataEvents = useSelectorMy((state: RootState) => state.events.data);
+  const { data: dataEvents, loading: loadingEvents, error: errorEvents } = useSelectorMy((state: RootState) => state.events);
   const { data: dataProfile, loading: loadingProfile, error: errorProfile } = useSelectorMy((state: RootState) => state.profile); 
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -45,6 +45,7 @@ const closeForm = () => {
 const saveChange = (updatedEvent: EventData) => {
 // Обновляем массив событий с новым значением
 //console.log(updatedEvent);
+
 if (dataEvents) {
     const updatedEvents = dataEvents.map(event => {
         if (event.id === updatedEvent.id) {

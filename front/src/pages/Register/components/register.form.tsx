@@ -57,7 +57,7 @@ const RegisterForm: React.FC = () => {
       .then((response) => {
         console.log('Регистрация успешна:', response);
         setSuccessMessage(
-          'Регистрация успешна! Вы будете перенаправлены через 5 секунд.'
+          'Регистрация успешна! Вы будете скоро перенаправлены.'
         );
         startRedirectCountdown();
       })
@@ -74,7 +74,7 @@ const RegisterForm: React.FC = () => {
   };
 
   const startRedirectCountdown = () => {
-    let countdown = 5;
+    let countdown = 0;
     setRedirectCountdown(countdown);
     const timer = setInterval(() => {
       countdown -= 1;

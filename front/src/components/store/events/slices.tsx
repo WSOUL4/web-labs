@@ -1,12 +1,8 @@
-// store/profileSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { refresh } from '../../../api/authService';
-import {  findAll, findMy, findBetweenDates, changeEvent } from '../../../api/eventService';
+import { findAll, findMy, findBetweenDates } from '../../../api/eventService';
 
-
-
-
-//events
+// Определяем интерфейсы
 interface EventData {
   id: number;
   title: string;
@@ -15,58 +11,79 @@ interface EventData {
   createdBy: number;
   location: string;
 }
+
 interface EventsState {
-  data: EventData[] | null; // Теперь это будет либо объект с данными профиля, либо null
+  data: EventData[] | null;
   loading: boolean;
   error: string | null;
 }
+
 interface FetchEventsParams {
   dateStart: string; 
   dateEnd: string;   
 }
+
+// Начальное состояние
 const initialState: EventsState = {
   data: null,
   loading: false,
   error: null,
 };
+
+// Асинхронные действия
 export const fetchMyEvents = createAsyncThunk<EventData[]>('events/fetchMyEvents', async () => {
   const response = await findMy();
   return response;
 });
+
 export const fetchAllEvents = createAsyncThunk<EventData[]>('events/fetchAllEvents', async () => {
   const response = await findAll();
-  //console.log(response);
   return response;
 });
+
 export const fetchEventsBetweenDates = createAsyncThunk<EventData[], FetchEventsParams>(
   'events/fetchEventsBetweenDates',
   async ({ dateStart, dateEnd }) => {
     const response = await findBetweenDates(dateStart, dateEnd);
     return response;
-  }
-);
+});
 
-// Добавляем новый редьюсер для обновления событий
+// Создаем slice
 const eventsSlice = createSlice({
   name: 'events',
   initialState,
+  
   reducers: {
     updateEvents(state, action) {
-      // Обновляем состояние с новыми событиями
-      
       if (state.data) {
         state.data = state.data.map(event =>
           event.id === action.payload.id ? { ...event, ...action.payload } : event
         );
       }
     },
+    
+    addEvent(state, action) {
+      if (state.data) {
+        state.data.push(action.payload);
+      } else {
+        state.data = [action.payload];
+      }
+    },
+    
+    removeEvent(state, action) {
+      if (state.data) {
+        state.data = state.data.filter(event => event.id !== action.payload.id);
+      }
+    },
+    
     clearEvents(state) {
       state.data = [];
       state.error = null;
     },
   },
   
-  extraReducers: (builder) => {
+// Обработчики дополнительных действий
+extraReducers: (builder) => {
     builder
       .addCase(fetchMyEvents.pending, (state) => {
         state.loading = true;
@@ -79,17 +96,14 @@ const eventsSlice = createSlice({
       .addCase(fetchMyEvents.rejected, (state, action) => {
         state.loading = false;
         if (action.error.message?.includes('401')) {
-          state.error = ('Ошибка 401: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё раз.');
+          state.error = ('Ошибка 401: Вы не авторизованы или ваш токен доступа просрочился.\nТокен сделал обновление, попробуйте ещё раз.');
           refresh();
         } else if (action.error.message?.includes('403')) {
-          state.error = ('Ошибка 403: Вы не авторизованы, или ваш токен доступа прослочился.\nТокен сделал обновление, попробуйте ещё раз.');
+          state.error = ('Ошибка 403: Вы не авторизованы или ваш токен доступа просрочился.\nТокен сделал обновление, попробуйте ещё раз.');
           refresh();
         }
       })
-
-
-
-
+      
       .addCase(fetchAllEvents.pending, (state) => {
         state.loading = true;
       })
@@ -108,17 +122,17 @@ const eventsSlice = createSlice({
       })
       .addCase(fetchEventsBetweenDates.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.data = action.payload; // Здесь можно также объединить с существующими событиями
         state.error = null;
       })
       .addCase(fetchEventsBetweenDates.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Что-то пошло не так.';
       });
-  },
+},
 });
 
-// Экспортируем новый action
-export const { updateEvents,clearEvents } = eventsSlice.actions;
+// Экспортируем actions и reducer
+export const { updateEvents, addEvent, removeEvent, clearEvents } = eventsSlice.actions;
 
 export default eventsSlice.reducer;
