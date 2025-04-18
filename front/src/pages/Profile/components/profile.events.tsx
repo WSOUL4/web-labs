@@ -180,9 +180,11 @@ return (
             
             
 
-            <button type="button" onClick={()=>handleAddClick()}>Добавить новый ивент</button>
+            
             <p></p>
             {dataEvents && (
+                <>
+                <button type="button" onClick={()=>handleAddClick()}>Добавить новый ивент</button>
                 <div className={stylesEventContainer.containerStyle}>
                 {dataEvents.map((event: EventData) => (
 
@@ -195,7 +197,8 @@ return (
                     </div>
 
                     ))}
-                </div>)}
+                </div>
+                </>)}
             {/* Условный рендеринг формы */}
             {isFormOpen && selectedEvent && (
                 <>
