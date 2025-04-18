@@ -16,7 +16,7 @@ const EventPage: React.FC = () => {
   const dispatch = useAppDispatch(); 
   const [errorMessage, setErrorMessage] = useState<string>('');
   const { data: dataEvents, loading: loadingEvents, error: errorEvents } = useSelectorMy((state: RootState) => state.events);
-  const { data: dataProfile, loading: loadingProfile, error: errorProfile } = useSelectorMy((state: RootState) => state.profile); 
+  const { user: dataProfile} = useSelectorMy((state: RootState) => state.auth); 
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);

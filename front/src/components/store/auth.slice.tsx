@@ -4,7 +4,7 @@ import {getProfile} from '../../api/profile';
 import axios from "axios";
 import {handleLogout} from '../../utils/localStorage';
 interface AuthState{
-    user: null | {id: string,name:string, email: string}
+    user: null | {id: number,name:string, email: string}
     isAuthenticated:boolean
     isLoading:boolean
     isError: boolean 

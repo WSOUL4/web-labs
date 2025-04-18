@@ -12,7 +12,7 @@ import { TypedUseSelectorHook, useSelector as rawUseSelector, useDispatch } from
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'], // сохраняем только auth
+  whitelist: ['auth'], 
 };
 
 
