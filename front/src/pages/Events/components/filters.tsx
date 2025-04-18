@@ -9,7 +9,8 @@ type FilterOption = 'My' | 'Dates' | 'All';
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch(); 
     const { data: dataEvents, loading: loadingEvents, error: errorEvents } = useSelectorMy((state: RootState) => state.events);
-
+const { data: dataProfile, loading: loadingProfile, error: errorProfile } = useSelectorMy((state: RootState) => state.profile); 
+ 
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>('All');
   const [dateStart, setDateStart] = useState<string>('');
   const [dateEnd, setDateEnd] = useState<string>('');
@@ -37,6 +38,7 @@ const DropdownFilter: React.FC = () => {
       dispatch(fetchAllEvents());
     } else if (selectedFilter === 'My') {
       dispatch(fetchMyEvents());
+
     } else if (selectedFilter === 'Dates') {
       dispatch(fetchEventsBetweenDates({ dateStart: dateStart, dateEnd: dateEnd }));
     }

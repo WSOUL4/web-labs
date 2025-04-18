@@ -7,13 +7,11 @@ import { fetchMyEvents, updateEvents } from '../../components/store/events/slice
 import styles from '../../styles/general.module.scss';
 import stylesProfile from './profile.module.scss';
 import { EventData,EventDataAdd } from '../Events/components/eventsContext';
-import stylesEvent from '../Events/components/event.instance.module.scss';
-import stylesEventContainer from '../Events/components/container.module.scss';
-import EventForm from './components/event.form';
-import AddForm from './components/add.form';
+
 import {changeEvent, addEvent, deleteEvent} from '../../api/eventService';
 import { refresh } from '../../api/authService';
 import { useNavigate } from 'react-router-dom';
+import ProfileEvents from './components/profile.events';
 const ProfilePage: React.FC = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -365,39 +363,12 @@ const delEvent=(updatedEvent: EventData)=>{
                     <h2 className={stylesProfile.profileHeader}>Ваш ID: </h2>
                     <p className={stylesProfile.profileText}>{dataProfile.id}</p>
                 </div>
-                <button type="button" onClick={()=>handleAddClick()}>Добавить новый ивент</button>
-                <p></p>
+                
                 </>
             )}
 
-
-            {dataEvents && (
-                <div className={stylesEventContainer.containerStyle}>
-                {dataEvents.map((event: EventData) => (
-
-                    <div key={event.id} className={stylesEvent.instance} onClick={() => handleEventClick(event)}>
-                        <h3>{event.title}</h3> 
-                        <p>{event.description}</p> 
-                        <p>Дата события: {event.date}</p> 
-                        <p>Создано пользователем ID: {event.createdBy}</p> 
-                        <p>Локация: {event.location}</p> 
-                    </div>
-
-                    ))}
-                </div>)}
-            {/* Условный рендеринг формы */}
-            {isFormOpen && selectedEvent && (
-                <>
-                <div className={stylesProfile.overlay} onClick={closeForm}></div>
-                <EventForm event={selectedEvent} onClose={closeForm} onSaveChange={saveChange} onDelete={delEvent} />
-            </>
-            )}
-           {isAddFormOpen && selectedEvent && (
-                <>
-                <div className={stylesProfile.overlay} onClick={closeForm}></div>
-                <AddForm event={selectedEvent} onClose={closeAddForm} onAdd={addNew} />
-            </>
-            )}
+            <div><ProfileEvents /></div>
+            
            
         </div>
     );

@@ -21,6 +21,7 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "declarations.d.ts"],
   "exclude": ["./node_modules"]
+  
 }
